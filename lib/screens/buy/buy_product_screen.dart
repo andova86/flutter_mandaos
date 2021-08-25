@@ -5,7 +5,7 @@ import 'package:mandaos/models/cart_product.dart';
 import 'package:mandaos/models/config.dart';
 import 'package:mandaos/models/product.dart';
 import 'package:mandaos/screens/buy/historical_buy.dart';
-import 'package:mandaos/services/database_helper.dart';
+
 import 'package:mandaos/services/db_helper.dart';
 import 'package:mandaos/services/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
@@ -24,7 +24,7 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
   //TextEditingController _filter = new TextEditingController();
   List<Product> list = [];
   List<Config> lista = [];
-  final dbHelper = new DatabaseHelper();
+
   DateTime date = DateTime.now();
 
   //List<Product> filteredProd = [];
@@ -48,8 +48,6 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
     int total = _getTotal();
 
     Widget _list() {
-      double result2 =
-          MediaQuery.of(context).size.height - AppBar().preferredSize.height;
       return _prodProvider.products.length == 0
           ? Expanded(child: Center(child: Text('No se ha seleccionado productos.'),))
           : Expanded(

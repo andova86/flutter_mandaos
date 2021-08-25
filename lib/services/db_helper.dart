@@ -8,6 +8,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database_helper.dart';
+/*
 
 Map<int, String> migrationScripts = {
 
@@ -55,6 +56,7 @@ Map<int, String> migrationScripts = {
 
 
 };
+*/
 
 
 class Script {
@@ -102,20 +104,21 @@ List<Script> list = [
             
           )
           '''),
-  Script(4, 'ALTER TABLE $table_config ADD pb TEXT ')
+  Script(4, 'ALTER TABLE $table_config ADD pb TEXT '),
+  Script(5, 'ALTER TABLE $table ADD pb TEXT ')
 ];
 
 Future initDatabase() async {
   // cantidad de migraciones para definir la version de la base de datos
-  int cantMigraciones = migrationScripts.length;
+  int cantMigraciones = list.length;
   var db = await openDatabase(
     join(await getDatabasesPath(), "database.db"),
     version: cantMigraciones,
     // Si la base de dato no existe, ejecuta el metodo OnCreate con las migraciones en migrationScripts
     onCreate: ( db, version) async {
       print(' Primera version es la $version');
-      for (int i = 1; i <= cantMigraciones; i++) {
-        await db.execute(migrationScripts[i]);
+      for (int i = 0; i < cantMigraciones; i++) {
+        await db.execute(list[i].execute);
       }
     },
 
@@ -124,7 +127,7 @@ Future initDatabase() async {
     onUpgrade: (db, oldVersion, newVersion) async {
       print(' Vieja version $oldVersion');
       print(' Nueva version $newVersion');
-      for (int i = oldVersion + 1; i <= newVersion; i++) {
+      for (int i = oldVersion ; i < newVersion; i++) {
         await db.execute(list[i].execute);
       }
     },
@@ -203,15 +206,15 @@ Future<List<Product>> listP() async {
   //Database db = await db_helper;
   final allRows = await queryAllRows(table);
 
-  // print('query all rowsssssssss:');
+  //print('query all rowsssssssss:');
 
   List<Product> list = [];
 
   for (int i = 0; i < allRows.length; i++) {
-    //print(allRows[i]);
+    print(allRows[i]);
     Product p = Product.fromJson(allRows[i]);
     p.id = allRows[i][ProductFields.id] as int;
-    print(p.toJson());
+   // print(p.toJson());
     list.add(p);
     //print(p.id);
   }
