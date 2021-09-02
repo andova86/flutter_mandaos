@@ -97,15 +97,7 @@ flutter:
   # example:
 
   fonts:
-     - family: Roboto
-       fonts:
-         - asset: assets/fonts/Roboto.ttf
-     - family: DancingScriptRegular
-       fonts:
-         - asset: assets/fonts/DancingScriptRegular.ttf
-     - family: HindRegular
-       fonts:
-         - asset: assets/fonts/HindRegular.ttf
+
      - family: UbuntuRegular
        fonts:
          - asset: assets/fonts/UbuntuRegular.ttf

@@ -5,12 +5,6 @@ class Assets {
   static const String assetsGoc2021ex410 = 'assets/goc2021ex410.pdf';
   static const String assetsImgPolloKid = 'assets/img/polloKid.png';
   static const String assetsImgProductos = 'assets/img/productos.png';
-  static const String fontsComingSoon = 'assets/fonts/ComingSoon.ttf';
-  static const String fontsDancingScriptRegular = 'assets/fonts/DancingScriptRegular.ttf';
-  static const String fontsHindRegular = 'assets/fonts/HindRegular.ttf';
-  static const String fontsMagilioRegular = 'assets/fonts/MagilioRegular.ttf';
-  static const String fontsRalewayRegular = 'assets/fonts/RalewayRegular.ttf';
-  static const String fontsRoboto = 'assets/fonts/Roboto.ttf';
   static const String fontsUbuntuRegular = 'assets/fonts/UbuntuRegular.ttf';
   static const String imgAceite = 'assets/img/aceite.jpg';
   static const String imgAceiteCocinerito = 'assets/img/aceiteCocinerito.jpg';
