@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/product.dart';
+import 'package:mandaos/modules/products/models/product.dart';
 
 
 class ProductProvider with ChangeNotifier {
@@ -16,6 +16,12 @@ class ProductProvider with ChangeNotifier {
         return true;
       }
     return false;
+
+  }
+
+  bool ContainProd(Product itemModel) {
+    return _products.contains(itemModel);
+
 
   }
   void updateToCatalog(Product itemModel) {

@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:mandaos/models/buy.dart';
 import 'package:mandaos/models/cart_product.dart';
-import 'package:mandaos/models/config.dart';
-import 'package:mandaos/models/product.dart';
+import 'package:mandaos/modules/cart/models/buy.dart';
+import 'package:mandaos/modules/products/models/product.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_migration/sqflite_migration.dart';
+
 
 
 
@@ -94,12 +91,13 @@ List<String>  migrations = [
   '''
 ];
 
-final config = MigrationConfig(initializationScript: initialScript, migrationScripts: migrations);
+//final config = MigrationConfig(initializationScript: initialScript, migrationScripts: migrations);
 
 
 
 
 
+/*
 
 class DatabaseHelper {
 
@@ -132,3 +130,4 @@ class DatabaseHelper {
   // Helper methods
 
 }
+*/

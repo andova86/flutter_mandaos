@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andovadev.mandao.mandaos">
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
    <application
         android:label="Mis mandaos"
         android:icon="@mipmap/launcher_icon">

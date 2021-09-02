@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mandaos/generated/assets.dart';
 import 'package:mandaos/models/config.dart';
-import 'package:mandaos/services/ListProducts.dart';
-
 import 'package:mandaos/services/database_helper.dart';
 import 'package:mandaos/services/db_helper.dart';
 import 'package:mandaos/utils/constants.dart';
@@ -324,7 +322,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'Se modificó los datos de la configuración correctamente.'),
+                                      'Se modificaron los datos de la configuración correctamente.'),
                                 ),
                               );
                             }

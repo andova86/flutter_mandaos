@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mandaos/models/buy.dart';
 import 'package:mandaos/models/cart_product.dart';
-import 'package:mandaos/models/product.dart';
+import 'package:mandaos/modules/cart/models/buy.dart';
+import 'package:mandaos/modules/products/models/product.dart';
 import 'package:mandaos/services/db_helper.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:mandaos/utils/funtions.dart';
@@ -88,7 +88,7 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                }
              else{
                list=[];
-               Message('! No existen datos de compra en el dia seleccionado.',context);
+               Message('! No existen datos de compra en el día seleccionado !',context);
              }
 
 

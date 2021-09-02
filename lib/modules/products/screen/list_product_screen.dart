@@ -1,18 +1,20 @@
+
 import 'package:animate_do/animate_do.dart';
-import 'package:animations/animations.dart';
-import 'package:badges/badges.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/screens/buy/buy_product_screen.dart';
-import 'package:mandaos/services/ListProducts.dart';
-import 'package:mandaos/services/database_helper.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
+import 'package:mandaos/modules/products/widget/card_prod_home_gv.dart';
 import 'package:mandaos/services/db_helper.dart';
-import 'package:mandaos/services/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:mandaos/widgets/badgeUI.dart';
-import 'package:mandaos/widgets/card_prod_home_gv.dart';
 import 'package:provider/provider.dart';
+
+
+
+
+
 
 class ListProductScreen extends StatefulWidget {
   const ListProductScreen({Key? key}) : super(key: key);
@@ -27,9 +29,9 @@ class _ListProductScreenState extends State<ListProductScreen> {
   List<Product> list = [];
   List<Product> list2 = [];
   List<Product> filteredProd = [];
-  String _searchText = "";
 
   Color _color = kPrimaryColor;
+
 
   /* _ListProductScreenState() {
     _filter.addListener(() {
@@ -73,7 +75,12 @@ class _ListProductScreenState extends State<ListProductScreen> {
           ),
         ),*/
 
-        actions: <Widget>[BadgeUI()],
+        actions: <Widget>[
+
+          BadgeUI(),
+
+
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -186,6 +193,9 @@ class _ListProductScreenState extends State<ListProductScreen> {
     );
   }
 
+
+
+
   @override
   void initState() {
     super.initState();
@@ -207,7 +217,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
   }
 
   Widget _buildList2(_prodProvider) {
-    final transitionType = ContainerTransitionType.fade;
+
     return GridView.builder(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 250,
@@ -265,13 +275,15 @@ class _ListProductScreenState extends State<ListProductScreen> {
                             showDialog(
                                 barrierDismissible: false,
                                 context: context,
-                                builder: (_) => new CupertinoAlertDialog(
-                                      title: Text(
-                                        'Añadir al carrito de compra',
+                                builder: (_) => new AlertDialog(
+                                      content: Text(
+                                        'Añadir al carrito de compra.',
                                         style: TextStyle(color: kPrimaryColor),
                                       ),
                                       actions: [
+
                                         TextButton(
+
                                           onPressed: () {
                                             bool result = _prodProvider
                                                 .addToCatalog(filteredProd[index]);
@@ -301,6 +313,7 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                                       ),
                                                     ],
                                                   ));
+
                                             } else {
                                               snackBar = SnackBar(
                                                   duration:
@@ -327,18 +340,21 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(snackBar);
                                           },
-                                          child: Text('ok'),
+                                          child: Text('Agregar', style: TextStyle(color: Colors.white,fontFamily: 'UbuntuRegular')),
+                                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kPrimaryColor)),
                                         ),
                                         TextButton(
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
                                           child: Text(
-                                            'cancelar',
+                                            'Cancelar',
                                             style: TextStyle(color: Colors.red),
                                           ),
                                         )
                                       ],
+
+
                                     ));
                           },
                         )),
@@ -365,46 +381,4 @@ class _ListProductScreenState extends State<ListProductScreen> {
     });
   }
 
-  Widget _welcom() {
-    double result =
-        MediaQuery.of(context).size.height - AppBar().preferredSize.height;
-    //print(result);
-    if (result >= 480) {
-      return Container(
-        height: MediaQuery.of(context).size.height * 0.15,
-        child: Container(
-          padding: EdgeInsets.only(
-              left: kDefaultPadding,
-              right: kDefaultPadding,
-              bottom: kDefaultPadding),
-          height: MediaQuery.of(context).size.height * 0.13,
-          decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(36),
-                  bottomRight: Radius.circular(36))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Bienvenido',
-                style: TextStyle(
-                  fontSize: 34,
-                  color: Colors.white,
-                ),
-              ),
-              //Image.network('assets/img/pro.png'),
-              Icon(
-                Icons.home_outlined,
-                size: 48,
-                color: kSecondaryColor,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    return Text('');
-  }
 }

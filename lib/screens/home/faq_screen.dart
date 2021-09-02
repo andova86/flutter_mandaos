@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mandaos/models/expansion_pannel.dart';
-import 'package:mandaos/screens/buy/historical_buy.dart';
 import 'package:mandaos/utils/constants.dart';
 
 class FaqScreen extends StatefulWidget {
@@ -114,7 +113,7 @@ class _FaqScreenState extends State<FaqScreen> {
                           body: Container(
                             padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
                             child: Text(
-                              itemData[index].discription,
+                              itemData[index].description,
                               style: TextStyle(
                                   color: kPrimaryColor.withOpacity(.8),
                                   fontFamily: 'UbuntuRegular',

@@ -1,22 +1,20 @@
-import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/screens/buy/buy_product_screen.dart';
-import 'package:mandaos/screens/buy/historical_buy.dart';
+import 'package:mandaos/modules/cart/screen/buy_product_screen.dart';
+import 'package:mandaos/modules/cart/screen/historical_buy.dart';
+import 'package:mandaos/modules/pdf/screens/document_screen.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/screen/list_product_screen.dart';
 import 'package:mandaos/screens/config/config_screen.dart';
 import 'package:mandaos/screens/home/about_screen.dart';
 import 'package:mandaos/screens/home/help_screen.dart';
-import 'package:mandaos/screens/products/list_product_screen.dart';
 import 'package:mandaos/services/db_helper.dart';
-import 'package:mandaos/services/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:mandaos/widgets/badgeUI.dart';
 import 'package:mandaos/widgets/card_carrousel.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:provider/provider.dart';
 
 import 'faq_screen.dart';
 
@@ -28,7 +26,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextEditingController _filter = new TextEditingController();
   String version = '';
   List<Product> list = [];
 
@@ -142,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         children: [
                           Text(
-                            'En solo 2 pasos, verifica tu precio.  ',
+                            'En solo 3 pasos, verifíca tu compra.  ',
                             style: TextStyle(
                                 color: kPrimaryColor,
                                 fontSize: 16,
@@ -163,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '  1- Ver productos y selecciona algunos.',
+                                  '  1- Ver y seleccionar productos.',
                                   style: TextStyle(
                                     fontFamily: 'UbuntuRegular',
                                       color: kPrimaryColor, fontSize: 12),
@@ -173,7 +170,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 5,
                                 ),
                                 Text(
-                                  '  2- Verifica tu precio por producto y el total a pagar.',
+                                  '  2- Verificar precio por producto y el total a pagar.',
+                                  style: TextStyle(
+                                    fontFamily: 'UbuntuRegular',
+                                    color: kPrimaryColor,
+                                    fontSize: 12,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '  3- Guarda tu compra virtual.',
                                   style: TextStyle(
                                     fontFamily: 'UbuntuRegular',
                                     color: kPrimaryColor,
@@ -400,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   ListTile(
                     onTap: () {
@@ -424,7 +434,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   ListTile(
                     onTap: () {
@@ -448,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   ListTile(
                     onTap: () {
@@ -472,7 +482,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   ListTile(
                     onTap: () {
@@ -488,7 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       size: 36,
                     ),
                     title: Text(
-                      'Configuracion',
+                      'Configuración',
                       style: TextStyle(
                           color: kPrimaryColor,
                           fontSize: 20,
@@ -496,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   ListTile(
                     onTap: () {
@@ -518,7 +528,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   ListTile(
                     onTap: () {
@@ -538,8 +548,32 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontFamily: 'UbuntuRegular'),
                     ),
                   ),
+
+
                   SizedBox(
-                    height: 15,
+                    height: 10,
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => DocumentScreen()));
+                    },
+                    leading: Icon(
+                      CupertinoIcons.doc_plaintext,
+                      color: kSecondaryColor,
+                      size: 36,
+                    ),
+                    title: Text(
+                      'Documentos',
+                      style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 20,
+                          fontFamily: 'UbuntuRegular'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   ListTile(
                     onTap: () {
@@ -560,6 +594,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontFamily: 'UbuntuRegular'),
                     ),
                   ),
+
                 ],
               ),
             ),

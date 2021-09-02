@@ -1,7 +1,5 @@
 import 'package:mandaos/generated/assets.dart';
-import 'package:mandaos/models/product.dart';
-
-import 'database_helper.dart';
+import 'package:mandaos/modules/products/models/product.dart';
 
 
 
@@ -57,7 +55,7 @@ final List<Product> list_products = [
       img: Assets.imgFrijolesColorados2, recomended: 0,kid: 0,),
   Product(
       id: 7,
-      title: 'Chicharo',
+      title: 'Chícharos',
       price: 0.3125,
       cuota: 10,
       um: 'oz',
@@ -218,7 +216,7 @@ final List<Product> list_products = [
         img: Assets.imgDayli, recomended: 0, kid: 0,),
     Product(
         id: 28,
-        title: 'Jabón Tocador Nacar',
+        title: 'Jabón Tocador Nácar',
         price: 7,
         cuota: 1,
         um: 'uno',

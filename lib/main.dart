@@ -3,13 +3,13 @@ import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mandaos/modules/products/data/ListProducts.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/screens/config/theme.dark.dart';
 import 'package:mandaos/screens/home/home_screen.dart';
 import 'package:mandaos/screens/home/splash_screen.dart';
-import 'package:mandaos/services/ListProducts.dart';
 import 'package:mandaos/services/database_helper.dart';
 import 'package:mandaos/services/db_helper.dart';
-import 'package:mandaos/services/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +28,7 @@ void main() => runApp(
 
 class MyApp extends StatelessWidget {
   //DatabaseHelper data = new DatabaseHelper();
-  final dbHelper = new DatabaseHelper();
+ // final dbHelper = new DatabaseHelper();
   static int sp = 0;
 
 

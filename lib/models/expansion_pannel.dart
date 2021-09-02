@@ -4,55 +4,50 @@ import 'package:mandaos/utils/constants.dart';
 class ItemModel {
   bool expanded;
   String headerItem;
-  String discription;
+  String description;
   Color colorsItem;
   //String img;
 
-  ItemModel({this.expanded: false, required this.headerItem, required this.discription,required this.colorsItem});
+  ItemModel({this.expanded: false, required this.headerItem, required this.description,required this.colorsItem});
 }
 
 
 List<ItemModel> itemData = <ItemModel>[
   ItemModel(
-      headerItem: 'Cual es el objetivo de la aplicación ?',
-      discription:
-      "La aplicación de Mandaos no es más que una herramienta para agilizar la compra en los mercado, su principal objetivo es ayudar a los consumidores "
-          " de una manera diferente a como lo hacen hoy, realizar los pagos por cada producto elegido verificando el precio total y su cuota.",
+      headerItem: 'Cuál es el objetivo de la aplicación ?',
+      description:
+      "La aplicación \"Mis Mandaos\" es una herramienta que facilita y agiliza la compra de los consumidores en las bodegas y mercados. Permite conocer de una manera rápida y segura, el precio total de una compra, así como el precio de cada producto y sus cuota por persona.",
       colorsItem: kPrimaryColor,
       //img: 'assets/images/android_img.png'
   ),
 
   ItemModel(
-    headerItem: 'Como funciona la aplicación ?',
-    discription:
-    "Usted debe ir a la página del listado de los productos, elegir aquellos que desee comprar y se le adicionará al carrito de compra. "
-        "Después ir la página de las compras virtuales para verificar de cada producto el precio y su cuota. Además la aplicación te brinda el Precio Total,"
-        "así como la posibilidad de almacenar la compra dentro de la base de datos interna. ",
+    headerItem: 'Cómo funciona la aplicación ?',
+    description:
+    "Debe ir a la opción \"Productos\" del menú, y añadir al carrito de compras aquellos que desee comprar. En la opción \"Su compra\" del menú, se muestran los productos seleccionados con su precio, así como el precio total de la compra. Tiene la opción de elegir la cantidad de consumidores, y los precios se actualizan automáticamente.",
     colorsItem: kPrimaryColor,
     //img: 'assets/images/android_img.png'
   ),
 
   ItemModel(
-    headerItem: 'Como añadir un producto al carrito de compras ?',
-    discription:
-    "Usted debe ir a la página del listado de los productos y debe pinchar en el icono en la parte superior izquierda del producto que desee adicionar. "
-        "En la parte superior derecha de la página la aplicación actualiza la cantidad de productos adicionados en un círculo rojo encima de un carrito de compras. ",
+    headerItem: 'Cómo añadir un producto al carrito de compras ?',
+    description:
+    "Debe ir a la opción \"Productos\" del menú, y seleccionar el ícono del carrito de compra, que aparece en la parte superior izquierda. Seleccionar la opción \"Agregar\".",
     colorsItem: kPrimaryColor,
     //img: 'assets/images/android_img.png'
   ),
 
   ItemModel(
-    headerItem: 'Como verificar mi compra virtual ?',
-    discription:
-    "La compra virtual se puede acceder desde el menú de la aplicación o puede pinchar en el icono del carrito de compra. "
-        "En esta pantalla se muestra un listado de productos seleccionados así como el precio de cada uno. También puede verificar el precio total. ",
+    headerItem: 'Cómo verificar mi compra virtual ?',
+    description:
+    "Debe ir a la opción \"Compras\" del menú. O acceder a través del ícono del carrito de compras situado en la parte superior derecha de la aplicación. Se muestra un listado de los productos con su precio, así como el precio total de la compra.",
     colorsItem: kPrimaryColor,
     //img: 'assets/images/android_img.png'
   ),
 
   ItemModel(
     headerItem: 'Cómo almacenar mi compra virtual ?',
-    discription:
+    description:
     "La compra virtual se puede almacenar dentro de la aplicación en caso de que el usuario desee guardar todos los datos. "
         "En esta pantalla se muestra una fecha que es muy importante en el momento de guardar la compra para tener un histórico de todas las compras realizadas. ",
     colorsItem: kPrimaryColor,
@@ -61,18 +56,16 @@ List<ItemModel> itemData = <ItemModel>[
 
   ItemModel(
     headerItem: 'Puedo visualizar todas las compras que he realizado ?',
-    discription:
-    "Sí por supuesto. En la pantalla de compras en la parte superior derecha se encuentra el icono de Datos Historicos donde el usuario debe pinchar para acceder. "
-    " Al entrar en la pantalla de Historial de Compras debe seleccionar la fecha cuando realizo la compra y pinchar el boton de obtener los datos de color rojo.",
+    description:
+    "Puede visualizar un registro histórico de las compras realizadas accediendo a la opción \"Historial de Compras\" del menú. Debe seleccionar la fecha de compra y actualizar la información correspondiente a esa fecha, seleccionando el ícono en rojo en la parte inferior derecha de la pantalla.",
     colorsItem: kPrimaryColor,
     //img: 'assets/images/android_img.png'
   ),
 
   ItemModel(
     headerItem: 'Puedo cambiar los datos de un producto ?',
-    discription:
-    "Sí por supuesto. En la pantalla de los productos usted puede pinchar en cada uno de ellos para ver los detalles en especifico. "
-        "También puede modificar sus datos pinchando en el botón rojo con ícono de un lápiz",
+    description:
+    "Puede modificar la información asociada a un producto, accediendo a la opción \"Productos\" del menú. Primero selecciona el producto que desea modificar, después selecciona el ícono del lápiz, en la parte superior derecha de la pantalla y modifica los valores que desee.",
     colorsItem: kPrimaryColor,
     //img: 'assets/images/android_img.png'
   ),

@@ -1,9 +1,9 @@
 // @dart=2.9
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/screens/products/modify_product_screen.dart';
-import 'package:mandaos/services/product_provider.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
+import 'package:mandaos/modules/products/screen/modify_product_screen.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:provider/provider.dart';
 

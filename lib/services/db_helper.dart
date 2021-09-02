@@ -1,9 +1,9 @@
 // @dart=2.9
 // I use a map for more readability, the key represents the version of the db
-import 'package:mandaos/models/buy.dart';
 import 'package:mandaos/models/cart_product.dart';
 import 'package:mandaos/models/config.dart';
-import 'package:mandaos/models/product.dart';
+import 'package:mandaos/modules/cart/models/buy.dart';
+import 'package:mandaos/modules/products/models/product.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

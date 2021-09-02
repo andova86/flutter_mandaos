@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:mandaos/screens/buy/buy_product_screen.dart';
-import 'package:mandaos/services/product_provider.dart';
+import 'package:mandaos/modules/cart/screen/buy_product_screen.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class BadgeUI extends StatelessWidget {

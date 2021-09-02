@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String assetsGoc2021ex410 = 'assets/goc2021ex410.pdf';
   static const String assetsImgPolloKid = 'assets/img/polloKid.png';
   static const String assetsImgProductos = 'assets/img/productos.png';
   static const String fontsComingSoon = 'assets/fonts/ComingSoon.ttf';
@@ -34,6 +35,7 @@ class Assets {
   static const String imgFrijolNegro = 'assets/img/frijolNegro.jpg';
   static const String imgFrijolesCol = 'assets/img/frijolesCol.jpg';
   static const String imgFrijolesColorados2 = 'assets/img/frijolesColorados2.jpg';
+  static const String imgGoc2021ex410 = 'assets/img/goc2021ex410.pdf';
   static const String imgHelpCart = 'assets/img/helpCart.png';
   static const String imgHelpModify = 'assets/img/helpModify.png';
   static const String imgHelpModifyProduct = 'assets/img/helpModifyProduct.png';
@@ -55,6 +57,7 @@ class Assets {
   static const String imgNinos2 = 'assets/img/ninos2.jpg';
   static const String imgNoimage = 'assets/img/noimage.png';
   static const String imgPan = 'assets/img/pan.jpg';
+  static const String imgPancarta = 'assets/img/pancarta.pdf';
   static const String imgPasta = 'assets/img/pasta.jpg';
   static const String imgPersonas = 'assets/img/personas.png';
   static const String imgPescado = 'assets/img/pescado.jpg';

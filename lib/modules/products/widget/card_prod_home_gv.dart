@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/screens/products/product_detail_screen.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/screen/product_detail_screen.dart';
 import 'package:mandaos/utils/constants.dart';
 
 class CardProductHomeGV extends StatelessWidget {

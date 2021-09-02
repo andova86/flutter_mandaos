@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/services/ListProducts.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/services/database_helper.dart';
 import 'package:mandaos/services/db_helper.dart';
-import 'package:mandaos/services/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +23,6 @@ class ModifyProductScreen extends StatefulWidget {
 // el formulario.
 class ModifyProductScreenState extends State<ModifyProductScreen> {
   //String t= '';
-
-
 
   TextEditingController _tcTittle = TextEditingController();
 
@@ -101,10 +98,9 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                           child: Text(
                             'Modificar Datos',
                             style: TextStyle(
-                              fontSize: 28,
-                              color: Colors.white,
-                              fontFamily: 'UbuntuRegular'
-                            ),
+                                fontSize: 28,
+                                color: Colors.white,
+                                fontFamily: 'UbuntuRegular'),
                           ),
                         ),
                         //Image.network('assets/img/pro.png'),
@@ -135,7 +131,9 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                         labelText: 'Nombre:',
                         alignLabelWithHint: true,
                         labelStyle: TextStyle(fontFamily: 'UbuntuRegular'),
-                        errorStyle: TextStyle(fontFamily: 'UbuntuRegular',fontWeight: FontWeight.bold),
+                        errorStyle: TextStyle(
+                            fontFamily: 'UbuntuRegular',
+                            fontWeight: FontWeight.bold),
                       ),
 
                       //  keyboardAppearance: numer,
@@ -156,8 +154,10 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                         border: UnderlineInputBorder(),
                         labelText: 'Precio(\$):',
                         alignLabelWithHint: true,
-                          labelStyle: TextStyle(fontFamily: 'UbuntuRegular'),
-                        errorStyle: TextStyle(fontFamily: 'UbuntuRegular',fontWeight: FontWeight.bold),
+                        labelStyle: TextStyle(fontFamily: 'UbuntuRegular'),
+                        errorStyle: TextStyle(
+                            fontFamily: 'UbuntuRegular',
+                            fontWeight: FontWeight.bold),
                       ),
                       //  keyboardAppearance: numer,
                       validator: (value) {
@@ -174,8 +174,10 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                         border: UnderlineInputBorder(),
                         labelText: 'Cuota o Cantidad:',
                         alignLabelWithHint: true,
-                          labelStyle: TextStyle(fontFamily: 'UbuntuRegular'),
-                        errorStyle: TextStyle(fontFamily: 'UbuntuRegular',fontWeight: FontWeight.bold),
+                        labelStyle: TextStyle(fontFamily: 'UbuntuRegular'),
+                        errorStyle: TextStyle(
+                            fontFamily: 'UbuntuRegular',
+                            fontWeight: FontWeight.bold),
                       ),
                       //  keyboardAppearance: numer,
                       validator: (value) {
@@ -192,7 +194,8 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            FocusScope.of(context).requestFocus(new FocusNode());
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
 
                             print('Precio anterior');
                             print(widget.prod.price);
@@ -204,9 +207,8 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                               widget.prod.cuota = double.parse(_tcCuota.text);
                               widget.prod.price = double.parse(_tcPrice.text);
                               widget.prod.title = _tcTittle.text;
-                              Future<int> id = update(
-                                  widget.prod.toJson(), table);
-
+                              Future<int> id =
+                                  update(widget.prod.toJson(), table);
 
                               print('Precio actual');
                               print(widget.prod.price);
@@ -215,7 +217,7 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                        'Se modificó los datos del producto correctamente.'),
+                                        'Se modificaron los datos del producto correctamente.'),
                                   ),
                                 );
                                 Navigator.of(context).pop();
@@ -229,13 +231,14 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                                   MaterialStateProperty.all(kotherColor),
                               padding:
                                   MaterialStateProperty.all(EdgeInsets.all(15)),
-                              shadowColor: MaterialStateProperty.all(kPrimaryColor),
+                              shadowColor:
+                                  MaterialStateProperty.all(kPrimaryColor),
                               elevation: MaterialStateProperty.all(3),
-                              shape:
-                                  MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          ))),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ))),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -243,7 +246,11 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                                 padding: const EdgeInsets.only(right: 15),
                                 child: Text(
                                   'Modificar información',
-                                  style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontFamily: 'UbuntuRegular', ),
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'UbuntuRegular',
+                                  ),
                                 ),
                               ),
                               Icon(

@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mandaos/models/cart_product.dart';
 import 'package:mandaos/models/config.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/screens/buy/historical_buy.dart';
-
+import 'package:mandaos/modules/cart/screen/historical_buy.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/services/db_helper.dart';
-import 'package:mandaos/services/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:mandaos/utils/funtions.dart';
 import 'package:mandaos/widgets/card_prod_buy.dart';
@@ -212,14 +211,14 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(snackBar);*/
                       },
-                      child: Text('ok'),
+                      child: Text('Aceptar'),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       child: Text(
-                        'cancelar',
+                        'Cancelar',
                         style: TextStyle(color: Colors.red),
                       ),
                     )

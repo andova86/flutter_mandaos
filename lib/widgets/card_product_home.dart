@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/services/product_provider.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -71,9 +71,9 @@ class CardProductHome extends StatelessWidget {
                 _prodProvider.addToCatalog(product);
                 final snackBar = SnackBar(
                   behavior: SnackBarBehavior.floating,
-                  content: Text('Se añadio ' + product.title + " al carrito de compras."),
+                  content: Text('Se añadió ' + product.title + " al carrito de compras."),
                   action: SnackBarAction(
-                    label: 'OK',
+                    label: 'Aceptar',
                     onPressed: () {},
                   ),
                 );

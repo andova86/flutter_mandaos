@@ -46,7 +46,7 @@ class SplashScreen extends StatelessWidget {
             title: 'Mandaos',
             body:
                 'La aplicación de Mandaos es una herramienta para ayudar a las personas de una manera fácil '
-                    'gestionar los productos que van a comprar en el Mercado.',
+                    'a gestionar los productos que van a comprar en el Mercado.',
             image: Image.asset(Assets.imgHome),
             decoration: PageDecoration(
 
@@ -59,8 +59,8 @@ class SplashScreen extends StatelessWidget {
           ),
 
           PageViewModel(
-              title: 'Menu de la aplicación',
-              body: 'A continuación un listado de opciones del menu y su descripción.',
+              title: 'Menú de la aplicación',
+              body: 'A continuación un listado de opciones del menú y su descripción.',
               image: Image.asset(Assets.imgMenu2),
               footer: Column(children: [
                 Container(
@@ -71,7 +71,7 @@ class SplashScreen extends StatelessWidget {
                     children: [
                       Text('1- ', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold,fontFamily: 'UbuntuRegular'),),
                       Expanded(
-                        child: Text('Página de inicio de la aplicación donde se muestra los productos mas comprados.',
+                        child: Text('Página de inicio de la aplicación donde se muestra los productos más comprados.',
                           style: TextStyle(color: kPrimaryColor,fontFamily: 'UbuntuRegular'),
 
                         ),
@@ -205,7 +205,7 @@ class SplashScreen extends StatelessWidget {
 
           PageViewModel(
 
-            title: 'Como se realiza una compra virtual ?',
+            title: 'Cómo se realiza una compra virtual ?',
             body: 'Usted puede seleccionar los productos que va a comprar en el mercado y los añade al carrito para comprobar el precio total.',
             image: Image.asset(Assets.imgProductoss),
               decoration: PageDecoration(
@@ -220,7 +220,7 @@ class SplashScreen extends StatelessWidget {
 
           PageViewModel(
             title: 'Comprobar el precio total.',
-            body: 'Según los productos seleccionados puede comprobar el precio total así como el precio de cada producto y sus cantidades.',
+            body: 'Según los productos seleccionados puede comprobar el precio total, así, como el precio de cada producto y sus cantidades.',
             image: Image.asset(Assets.imgCompra),
               decoration: PageDecoration(
 
@@ -249,7 +249,7 @@ class SplashScreen extends StatelessWidget {
 
           PageViewModel(
             title: 'Ver detalles de cada Producto',
-            body: 'Usted puede ver los datos de la cuota , precio y un ejemplo del precio por persona (generado hasta 6 personas)',
+            body: 'Usted puede ver los datos de la cuota , precio y un ejemplo del precio por persona (generado hasta 6 personas).',
             image: Image.asset(Assets.imgDetalle),
               decoration: PageDecoration(
 
@@ -263,7 +263,7 @@ class SplashScreen extends StatelessWidget {
 
           PageViewModel(
             title: 'Modificar los datos de cada producto',
-            body: 'Para facilitar al usuario se incorpora una opción útil para modificar los datos datos de un producto.',
+            body: 'Para facilitar al usuario se incorpora una opción útil para modificar los datos de un producto.',
             image: Image.asset(Assets.imgModificar),
               decoration: PageDecoration(
 

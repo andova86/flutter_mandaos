@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/product.dart';
-import 'package:mandaos/screens/products/product_detail_screen.dart';
+import 'package:mandaos/modules/products/models/product.dart';
+import 'package:mandaos/modules/products/screen/product_detail_screen.dart';
 
 class CardCarrousel extends StatelessWidget {
   // const CardCarrousel({Key? key}) : super(key: key);
