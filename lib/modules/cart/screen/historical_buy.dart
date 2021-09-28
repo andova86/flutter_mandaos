@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mandaos/models/cart_product.dart';
+import 'package:mandaos/modules/cart/models/cart_product.dart';
 import 'package:mandaos/modules/cart/models/buy.dart';
 import 'package:mandaos/modules/products/models/product.dart';
 import 'package:mandaos/services/db_helper.dart';
@@ -45,6 +45,7 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
 
     //int total = _getTotal();
 
+
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -80,9 +81,6 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
 
                  list = listaD;
 
-                 setState(() {
-                   value = list.first.cant;
-                 });
 
                  total = _getTotal();
                }
@@ -127,16 +125,17 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Text(
-                      'Consumidores: ',
+                      'Cantidad: ',
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                           color: kSecondaryColor,
                           fontFamily: 'UbuntuRegular'),
                     ),
                   ),
                   //Image.network('assets/img/pro.png'),
                   Text(
-                    value.toString(),
+                    list.length.toString() + ' productos.',
                     style: TextStyle(
                         fontSize: 18,
                         color: kSecondaryColor,
@@ -152,7 +151,7 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                   child: ListView.builder(
                     itemCount: list.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _data(list[index]);
+                      return _data(list[index], index);
                     },
                   ),
                   // margin: EdgeInsets.only(left: 10, right: 10),
@@ -264,7 +263,7 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
     int vtotal = 0;
     print('Cantidad: ' + list.length.toString());
    for (int i = 0; i < list.length; i++) {
-      double t = list[i].price * list[i].cuota * (value);
+      double t = list[i].price * list[i].cuota * list[i].cant;
       vtotal = vtotal + t.round();
     }
 
@@ -274,24 +273,6 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
   @override
   void initState() {
     super.initState();
-
-    _getConfig(DateFormat('dd/MM/yyyy').format(date)).then((val) {
-      setState(() {
-        list = listaD;
-
-        if(list.isNotEmpty)
-          {
-            setState(() {
-              value = list.first.cant;
-            });
-            total = _getTotal();
-          }
-
-      });
-      print("success");
-    }).catchError((error, stackTrace) {
-      print("outer: $error");
-    });
 
 
   }
@@ -304,6 +285,7 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
   _getConfig(String dateNew) async {
    // print(date);
     listaD = await listCartProductBuy(dateNew);
+    //print(listaD);
   }
 
   _getBuy() async {
@@ -349,53 +331,68 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
         date = selected;
 
       });
-//print("LA FECHA ES " + DateFormat('dd/MM/yyyy').format(selected));
 
     }
   }
 
-/*
-  int _getTotal() {
-    int vtotal = 0;
-    for (int i = 0; i < list.length; i++) {
-      double t = list[i].price * list[i].cuota * (value + valueK);
-      vtotal = vtotal + t.round();
-    }
 
-    return vtotal;
-  }
-*/
 
-  Widget _data(CartProduct cart) {
-    Product? p1;
+
+
+  Widget _data(CartProduct cart, int index1) {
+
 
 
  double  p = cart.price * cart.cant * cart.cuota;
+    String unit = cart.um == "uno"? cart.title.toLowerCase() :cart.um.toString();
 
     return Column(
       children: [
 
-        ListTile(
-          leading:  CircleAvatar(
-            maxRadius: 20,
-            backgroundImage: AssetImage(cart.img),
-          ),
-          title: Text(cart.title, maxLines: 2, overflow: TextOverflow.ellipsis,),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 5,),
-              Text((cart.cuota * cart.cant).toString() + " " + cart.um.toString() + " por " + cart.cant.toString() + " personas."),
+        Dismissible(
+          key: UniqueKey(),
+          child: ListTile(
+            leading:  CircleAvatar(
+              maxRadius: 20,
+              backgroundImage: AssetImage(cart.img),
+            ),
+            title: Text(cart.title, maxLines: 2, overflow: TextOverflow.ellipsis,),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 5,),
+                Text((cart.cuota * cart.cant).toString().replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "")  + " " + unit + " por " + cart.cant.toString() + " personas."),
 
-            ],
+              ],
+            ),
+            trailing: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('\$ ' + p.toStringAsFixed(1).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "")  , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),),
+               /* Text('CUP',style: TextStyle(color: kTextColor),)*/
+              ],
+            ),
           ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('\$ ' + p.toStringAsFixed(1) , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),),
-             /* Text('CUP',style: TextStyle(color: kTextColor),)*/
-            ],
+
+          onDismissed: (index) {
+            setState(() {
+              delete(cart.id, tableCartProducts);
+              list.removeAt(index1);
+            });
+          },
+
+          direction: DismissDirection.endToStart,
+
+          background: Container(
+            color: Colors.red,
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            alignment: Alignment.centerRight,
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+              size: 32,
+            ),
           ),
         ),
         Divider(height: 10,),

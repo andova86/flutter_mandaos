@@ -1,38 +1,50 @@
-// @dart=2.9
+
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:animate_do/animate_do.dart';
+
 import 'package:mandaos/modules/products/models/product.dart';
 import 'package:mandaos/modules/products/provider/product_provider.dart';
-import 'package:mandaos/modules/products/screen/modify_product_screen.dart';
 import 'package:mandaos/utils/constants.dart';
-import 'package:provider/provider.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  final Product product;
 
-  ProductDetailScreen(this.product);
+class ProductDetailScreen extends StatefulWidget {
+  //const ProductDetailScreen({Key? key}) : super(key: key);
+
+  Product product;
+
+  ProductDetailScreen({required this.product});
 
   @override
+  _ProductDetailScreenState createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  @override
   Widget build(BuildContext context) {
-    // String sub = product.cuota.toString() + " " + product.um + " por persona";
-    //String sub2 = product.cuota.toString() + " por persona";
+
+    //Product product = ModalRoute.of(context)!.settings.arguments as Product;
+
 
     String total =
-        "\$ " + product.price.toStringAsFixed(2) + " CUP por " + product.um;
+        "\$ " + widget.product.price.toStringAsFixed(2).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") + " CUP por " + widget.product.um;
     Size size = MediaQuery.of(context).size;
 
-    double t = product.price * product.cuota;
+    double t = widget.product.price * widget.product.cuota;
     double price1 = (t * 1);
     double price2 = (t * 2);
     double price3 = t * 3;
     double price4 = t * 4;
     double price5 = t * 5;
     double price6 = t * 6;
-    String sub =  product.cuota.toString() + ' ' + product.um + ' por ';
-    String sub2 =  product.cuota.toString()  + ' por ';
+    String sub =  widget.product.cuota.toString().replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") + ' ' + widget.product.um + ' por ';
+    String sub2 =  widget.product.cuota.toString().replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "")   + ' por ';
     //double price7 = t * 7;
     final _prodProvider = Provider.of<ProductProvider>(context, listen: false);
     double result = MediaQuery.of(context).size.height - AppBar().preferredSize.height;
+
 
 
     Widget _people() {
@@ -43,109 +55,10 @@ class ProductDetailScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '1 ',
-                              style: TextStyle(
-                                  color: kSecondaryColor, fontSize: 14),
-                            ),
-                            Icon(
-                              CupertinoIcons.person_alt,
-                              color: kSecondaryColor,
-                              size: 20,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Chip(
-                      backgroundColor: Colors.white,
-                      labelPadding: EdgeInsets.all(0.5),
-                      label: Text(
-                        '\$ ' + price1.toStringAsFixed(2) + ' CUP ',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '2 ',
-                              style: TextStyle(
-                                  color: kSecondaryColor, fontSize: 14),
-                            ),
-                            Icon(
-                              CupertinoIcons.person_alt,
-                              color: kSecondaryColor,
-                              size: 20,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Chip(
-                      backgroundColor: Colors.white,
-                      label: Text(
-                        '\$ ' + price2.toStringAsFixed(2) + ' CUP ',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '3 ',
-                              style: TextStyle(
-                                  color: kSecondaryColor, fontSize: 14),
-                            ),
-                            Icon(
-                              CupertinoIcons.person_alt,
-                              color: kSecondaryColor,
-                              size: 20,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Chip(
-                      backgroundColor: Colors.white,
-                      label: Text(
-                        '\$ ' + price3.toStringAsFixed(2) + ' CUP ',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
+                _PricePerPerson(price1, 1),
+                _PricePerPerson(price2, 2),
+                _PricePerPerson(price3, 3),
+
               ],
             ),
           ),
@@ -157,109 +70,9 @@ class ProductDetailScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '4 ',
-                              style: TextStyle(
-                                  color: kSecondaryColor, fontSize: 14),
-                            ),
-                            Icon(
-                              CupertinoIcons.person_alt,
-                              color: kSecondaryColor,
-                              size: 20,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Chip(
-                      backgroundColor: Colors.white,
-                      labelPadding: EdgeInsets.all(0.5),
-                      label: Text(
-                        '\$ ' + price4.toStringAsFixed(2) + ' CUP ',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '5 ',
-                              style: TextStyle(
-                                  color: kSecondaryColor, fontSize: 14),
-                            ),
-                            Icon(
-                              CupertinoIcons.person_alt,
-                              color: kSecondaryColor,
-                              size: 20,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Chip(
-                      backgroundColor: Colors.white,
-                      label: Text(
-                        '\$ ' + price5.toStringAsFixed(2) + ' CUP ',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '6 ',
-                              style: TextStyle(
-                                  color: kSecondaryColor, fontSize: 14),
-                            ),
-                            Icon(
-                              CupertinoIcons.person_alt,
-                              color: kSecondaryColor,
-                              size: 20,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Chip(
-                      backgroundColor: Colors.white,
-                      label: Text(
-                        '\$ ' + price6.toStringAsFixed(2) + ' CUP ',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
+                _PricePerPerson(price4, 4),
+                _PricePerPerson(price5, 5),
+                _PricePerPerson(price6, 6),
               ],
             ),
           ),
@@ -273,11 +86,9 @@ class ProductDetailScreen extends StatelessWidget {
       //floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ModifyProductScreen(product)),
-          );
+          //Navigator.of(context).po
+
+         Navigator.pushNamed(context, 'productmodify',arguments: widget.product).then((val) => onGoBack(val));
         },
         mini: result < 500? true: false,
         // heroTag: "modify-"+ product.id.toString(),
@@ -297,27 +108,19 @@ class ProductDetailScreen extends StatelessWidget {
 
         slivers: [
           SliverAppBar(
-
-            collapsedHeight: size.height * 0.4,
+            backgroundColor: kPrimaryColor,
+            floating: true,
+            collapsedHeight: size.height * 0.3,
             leading: new IconButton(
               icon: new Icon(Icons.arrow_back, color: kPrimaryColor, size: 32,),
               onPressed: () => Navigator.of(context).pop(),
             ),
 
-          /* actions: [
-             product.recomended == 1? Padding(
-               padding: const EdgeInsets.all(8.0),
-               child: Icon(Icons.favorite, color: Colors.redAccent,),
-             ) : Padding(
-               padding: const EdgeInsets.all(8.0),
-               child: Icon(Icons.favorite_border, color: Colors.redAccent,),
-             )
-           ],*/
             flexibleSpace: Hero(
-              tag: "hero-" + product.id.toString() + product.title,
+              tag: "hero-" + widget.product.id.toString() + widget.product.title,
               transitionOnUserGestures: true,
               child: Image.asset(
-                product.img,
+                widget.product.img,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: size.height *0.4,
@@ -332,15 +135,7 @@ class ProductDetailScreen extends StatelessWidget {
                   EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
                   margin: EdgeInsets.zero,
                   //height: double.minPositive,
-                  decoration: BoxDecoration(
-                    //borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-                    //boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 30, spreadRadius: 50)],
 
-                    //borderRadius: BorderRadius.all(Radius.circular(20)),
-                    // boxShadow: [BoxShadow(color: Colors.black38, blurRadius: -10,offset: Offset(0,5))]
-
-                    //borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
-                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -351,109 +146,94 @@ class ProductDetailScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                /*Text(
-                              'Datos por consumidor',
-                              style: TextStyle(
-                                color: kSecondaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),*/
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                    SizedBox(height: 15,),
+                                    Text(
+                                      widget.product.title,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          color: kSecondaryColor,
+                                          fontFamily: 'UbuntuRegular',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Divider(
+                                      height: 20,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      'Cuota',
+                                      style: TextStyle(
+                                        color:
+                                        kSecondaryColor.withOpacity(.7),
+                                        fontSize: 12,
+                                        fontFamily: 'UbuntuRegular',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          product.title,
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              color: kSecondaryColor,
-                                              fontFamily: 'UbuntuRegular',
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Divider(
-                                          height: 20,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          'Cuota',
-                                          style: TextStyle(
-                                            color:
-                                            kSecondaryColor.withOpacity(.7),
-                                            fontSize: 12,
-                                            fontFamily: 'UbuntuRegular',
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                        product.um == 'uno'? sub2:sub,
+                                    widget.product.um == 'uno'? sub2:sub,
 
-                                              style: TextStyle(
-                                                  color: kSecondaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'UbuntuRegular',
-                                                  fontSize: 16),
-                                            ),
-                                            Icon(
-                                              CupertinoIcons.person_alt,
-                                              color:
-                                              kSecondaryColor,
-                                              size: 20,
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Precio',
                                           style: TextStyle(
-                                            color:
-                                            kSecondaryColor.withOpacity(.7),
-                                            fontSize: 12,
-                                            fontFamily: 'UbuntuRegular',
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                              color: kSecondaryColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'UbuntuRegular',
+                                              fontSize: 16),
                                         ),
-                                        FittedBox(
-                                          fit: BoxFit.fitWidth,
-                                          child: Text(
-                                            total,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: kSecondaryColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'UbuntuRegular',
-                                                fontSize: 16),
-                                          ),
+                                        Icon(
+                                          CupertinoIcons.person_alt,
+                                          color:
+                                          kSecondaryColor,
+                                          size: 20,
                                         )
                                       ],
                                     ),
                                   ],
                                 ),
-
-                                // Text(product.um == 'uno'? sub : sub2),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Precio',
+                                      style: TextStyle(
+                                        color:
+                                        kSecondaryColor.withOpacity(.7),
+                                        fontSize: 12,
+                                        fontFamily: 'UbuntuRegular',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    FittedBox(
+                                      fit: BoxFit.fitWidth,
+                                      child: Text(
+                                        total,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: kSecondaryColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'UbuntuRegular',
+                                            fontSize: 16),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ],
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
                             ),
                           ),
                           SizedBox(
@@ -483,7 +263,7 @@ class ProductDetailScreen extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {
 
-                              bool result = _prodProvider.addToCatalog(product);
+                              bool result = _prodProvider.addToCatalog(widget.product);
 
 
                              // Navigator.of(context).pop();
@@ -577,5 +357,57 @@ class ProductDetailScreen extends StatelessWidget {
 
       ),
     );
+
+
+  }
+  FutureOr onGoBack(var val) {
+
+    setState(() {
+      widget.product =val;
+    });
   }
 }
+
+
+
+
+Widget _PricePerPerson(double  price, int number ){
+
+  return   Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                number.toString() + " ",
+                style: TextStyle(
+                    color: kSecondaryColor, fontSize: 14),
+              ),
+              Icon(
+                CupertinoIcons.person_alt,
+                color: kSecondaryColor,
+                size: 20,
+              )
+            ],
+          ),
+        ],
+      ),
+      Chip(
+        backgroundColor: Colors.white,
+        labelPadding: EdgeInsets.all(0.5),
+        label: Text(
+          '\$ ' + price.toStringAsFixed(2).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") + ' CUP ',
+          style: TextStyle(
+              fontSize: 11,
+              color: kPrimaryColor,
+              fontWeight: FontWeight.bold),
+        ),
+      )
+    ],
+  );
+}
+
+

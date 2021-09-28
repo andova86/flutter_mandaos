@@ -1,4 +1,3 @@
-
 import 'package:animate_do/animate_do.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -8,11 +7,9 @@ import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/modules/products/widget/card_prod_home_gv.dart';
 import 'package:mandaos/services/db_helper.dart';
 import 'package:mandaos/utils/constants.dart';
-import 'package:mandaos/widgets/badgeUI.dart';
+import 'package:mandaos/utils/helper.dart';
+import 'package:mandaos/widgets/ui/badgeUI.dart';
 import 'package:provider/provider.dart';
-
-
-
 
 
 
@@ -32,7 +29,6 @@ class _ListProductScreenState extends State<ListProductScreen> {
 
   Color _color = kPrimaryColor;
 
-
   /* _ListProductScreenState() {
     _filter.addListener(() {
 
@@ -44,42 +40,21 @@ class _ListProductScreenState extends State<ListProductScreen> {
 */
   @override
   Widget build(BuildContext context) {
+   // print(' pinta la lista');
     final _prodProvider = Provider.of<ProductProvider>(context, listen: false);
 
     Size size = MediaQuery.of(context).size;
-    int counter = _prodProvider.products.length;
+    changeStatusLight();
+
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        /*leading: IconButton(
-          icon: Icon(
-            Icons.,
-            size: 32,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),*/
-        //title: Text('Productos de la Bodega'),
-        backgroundColor: kPrimaryColor,
         elevation: 0,
-        /* leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(
-              CupertinoIcons.decrease_indent,
-              color: Colors.white,
-            ),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),*/
+        backgroundColor: kPrimaryColor,
 
         actions: <Widget>[
-
           BadgeUI(),
-
-
         ],
       ),
       body: Column(
@@ -88,40 +63,8 @@ class _ListProductScreenState extends State<ListProductScreen> {
             height: size.height * 0.2,
             child: Stack(
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(
-                      left: kDefaultPadding,
-                      right: kDefaultPadding,
-                      bottom: 36 + kDefaultPadding),
-                  height: size.height * 0.2 - 10,
-                  decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(36),
-                          bottomRight: Radius.circular(36))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Text(
-                          'Productos',
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontFamily: 'UbuntuRegular'),
-                        ),
-                      ),
-                      //Image.network('assets/img/pro.png'),
-                      Icon(
-                        Icons.view_list,
-                        size: 40,
-                        color: kSecondaryColor,
-                      ),
-                    ],
-                  ),
-                ),
+                const _Head(),
+
                 Positioned(
                     bottom: 0,
                     left: 0,
@@ -193,9 +136,6 @@ class _ListProductScreenState extends State<ListProductScreen> {
     );
   }
 
-
-
-
   @override
   void initState() {
     super.initState();
@@ -216,8 +156,11 @@ class _ListProductScreenState extends State<ListProductScreen> {
     super.dispose();
   }
 
-  Widget _buildList2(_prodProvider) {
 
+
+
+  Widget _buildList2(_prodProvider) {
+    print(' Building listview productos');
     return GridView.builder(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 250,
@@ -281,12 +224,11 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                         style: TextStyle(color: kPrimaryColor),
                                       ),
                                       actions: [
-
                                         TextButton(
-
                                           onPressed: () {
-                                            bool result = _prodProvider
-                                                .addToCatalog(filteredProd[index]);
+                                            bool result =
+                                                _prodProvider.addToCatalog(
+                                                    filteredProd[index]);
 
                                             Navigator.of(context).pop();
 
@@ -313,7 +255,6 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                                       ),
                                                     ],
                                                   ));
-
                                             } else {
                                               snackBar = SnackBar(
                                                   duration:
@@ -340,8 +281,14 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(snackBar);
                                           },
-                                          child: Text('Agregar', style: TextStyle(color: Colors.white,fontFamily: 'UbuntuRegular')),
-                                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kPrimaryColor)),
+                                          child: Text('Agregar',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'UbuntuRegular')),
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      kPrimaryColor)),
                                         ),
                                         TextButton(
                                           onPressed: () {
@@ -353,8 +300,6 @@ class _ListProductScreenState extends State<ListProductScreen> {
                                           ),
                                         )
                                       ],
-
-
                                     ));
                           },
                         )),
@@ -380,5 +325,53 @@ class _ListProductScreenState extends State<ListProductScreen> {
       filteredProd = lista;
     });
   }
+}
 
+
+class _Head extends StatelessWidget {
+  const _Head({Key? key}) : super(key: key);
+
+
+
+  @override
+  Widget build(BuildContext context) {
+   // print('pinta la cabecera');
+
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      padding: EdgeInsets.only(
+          left: kDefaultPadding,
+          right: kDefaultPadding,
+          bottom: 36 + kDefaultPadding),
+      height: size.height * 0.2 - 10,
+      decoration: BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(36),
+              bottomRight: Radius.circular(36))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Text(
+              'Productos',
+              style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontFamily: 'UbuntuRegular'),
+            ),
+          ),
+          //Image.network('assets/img/pro.png'),
+          Icon(
+            Icons.view_list,
+            size: 40,
+            color: kSecondaryColor,
+          ),
+        ],
+      ),
+    );
+  }
 }

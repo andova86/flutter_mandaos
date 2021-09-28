@@ -1,17 +1,16 @@
 // @dart=2.9
 // I use a map for more readability, the key represents the version of the db
-import 'package:mandaos/models/cart_product.dart';
-import 'package:mandaos/models/config.dart';
+import 'package:mandaos/generated/assets.dart';
+import 'package:mandaos/modules/cart/models/cart_product.dart';
+import 'package:mandaos/modules/home/models/config.dart';
 import 'package:mandaos/modules/cart/models/buy.dart';
 import 'package:mandaos/modules/products/models/product.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'database_helper.dart';
-/*
 
 Map<int, String> migrationScripts = {
-
   1: '''
           CREATE TABLE $table (
             $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -50,18 +49,12 @@ Map<int, String> migrationScripts = {
             
           )
           ''',
-  4: 'ALTER TABLE $table_config ADD pb TEXT ',
-
-
-
-
 };
-*/
-
 
 class Script {
   int number;
   String execute;
+
   Script(this.number, this.execute);
 }
 
@@ -79,7 +72,7 @@ List<Script> list = [
             
           )
           '''),
-  Script(2,'''
+  Script(2, '''
           
            CREATE TABLE $tableCartProducts (
             $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -104,8 +97,8 @@ List<Script> list = [
             
           )
           '''),
-  Script(4, 'ALTER TABLE $table_config ADD pb TEXT '),
-  Script(5, 'ALTER TABLE $table ADD pb TEXT ')
+  //Script(4, 'ALTER TABLE $table_config ADD pb TEXT '),
+  //Script(5, 'ALTER TABLE $table ADD pb TEXT ')
 ];
 
 Future initDatabase() async {
@@ -115,9 +108,10 @@ Future initDatabase() async {
     join(await getDatabasesPath(), "database.db"),
     version: cantMigraciones,
     // Si la base de dato no existe, ejecuta el metodo OnCreate con las migraciones en migrationScripts
-    onCreate: ( db, version) async {
+    onCreate: (db, version) async {
       print(' Primera version es la $version');
-      for (int i = 0; i < cantMigraciones; i++) {
+      print(' La cantidad es  ${list.length}');
+      for (int i = 0; i < list.length; i++) {
         await db.execute(list[i].execute);
       }
     },
@@ -127,7 +121,7 @@ Future initDatabase() async {
     onUpgrade: (db, oldVersion, newVersion) async {
       print(' Vieja version $oldVersion');
       print(' Nueva version $newVersion');
-      for (int i = oldVersion ; i < newVersion; i++) {
+      for (int i = oldVersion; i < newVersion; i++) {
         await db.execute(list[i].execute);
       }
     },
@@ -176,14 +170,20 @@ Future<int> queryRowCountConfig() async {
 Future<int> update(Map<String, dynamic> row, String pTable) async {
   Database db = await db_helper;
   int id = row[columnId];
-  return await db
-      .update(pTable, row, where: '$columnId = ?', whereArgs: [id]);
+  return await db.update(pTable, row, where: '$columnId = ?', whereArgs: [id]);
 }
 
 Future<Product> get(int id, String pTable) async {
   Database db = await db_helper;
 
-  var result = await db.query(pTable, where: '$columnId = ', whereArgs: [id]);
+  var result = await db.query(pTable, where: '$columnId = ?', whereArgs: [id]);
+  return result.isNotEmpty ? Product.fromJson(result.first) : null;
+}
+
+Future<Product> getS(String name, String pTable) async {
+  Database db = await db_helper;
+
+  var result = await db.query(pTable, where: '$columnTitle = ?', whereArgs: [name]);
   return result.isNotEmpty ? Product.fromJson(result.first) : null;
 }
 
@@ -191,8 +191,29 @@ Future<Buy> getBuybyDate(String date, String pTable) async {
   Database db = await db_helper;
 
   var result =
-  await db.query(pTable, where: '$columnDate = ', whereArgs: [date]);
+      await db.query(pTable, where: '$columnDate = ', whereArgs: [date]);
   return result.isNotEmpty ? Buy.fromJson(result.first) : null;
+}
+
+Future<List<Map<String, dynamic>>> getBuybyMonth(
+    String dateFirst, String dateLast, String pTable) async {
+  Database db = await db_helper;
+
+  var result = await db.query(pTable,
+      where: '$columnDate >= $dateFirst and  $columnDate >= $dateLast ',
+      whereArgs: [dateFirst, dateLast]);
+  return result;
+}
+
+Future<List<Map<String, dynamic>>> getBuybyDates(
+    String dateFirst, String dateLast, String pTable) async {
+  Database db = await db_helper;
+
+  var result = await db.query(pTable,
+      where: '$columnDate <= ? AND  $columnDate >= ?',
+      whereArgs: [dateLast, dateFirst]);
+  print(result);
+  return result;
 }
 
 // Deletes the row specified by the id. The number of affected rows is
@@ -214,7 +235,7 @@ Future<List<Product>> listP() async {
     print(allRows[i]);
     Product p = Product.fromJson(allRows[i]);
     p.id = allRows[i][ProductFields.id] as int;
-   // print(p.toJson());
+    // print(p.toJson());
     list.add(p);
     //print(p.id);
   }
@@ -275,8 +296,6 @@ Future<List<Buy>> listBuy() async {
   print('query all rowsssssssss:');
   //insert(row, pTable)
 
-
-
   List<Buy> list = [];
 
   for (int i = 0; i < allRows.length; i++) {
@@ -305,7 +324,7 @@ Future<List<CartProduct>> listCartProductBuy(String date) async {
     CartProduct cart = CartProduct.fromJson(allRows[i]);
     if (cart.date == date) {
       cart.id = allRows[i]['_id'] as int;
-
+      print(cart.toJson());
       list.add(cart);
     }
 
@@ -315,4 +334,150 @@ Future<List<CartProduct>> listCartProductBuy(String date) async {
   }
 
   return list;
+}
+
+Future<int> cantBuysInYear(int year) async {
+  //Database db = await db_helper;
+  String first = '01/01/' + DateTime.now().year.toString();
+  String last = '31/12/' + DateTime.now().year.toString();
+
+  final allRows = await getBuybyDates(first, last, tableCartProducts);
+
+  double result = 0;
+
+  allRows.forEach((element) {
+    var item = CartProduct.fromJson(element);
+
+    double value = item.price * item.cant * item.cuota;
+    result = result + value;
+  });
+
+  return result.toInt();
+}
+
+Future<int> cantDatesBuysInYear(int year) async {
+  //Database db = await db_helper;
+  String first = '01/01/' + DateTime.now().year.toString();
+  String last = '31/12/' + DateTime.now().year.toString();
+  List<String> dates = [];
+
+  final allRows = await getBuybyDates(first, last, tableCartProducts);
+  // print('******** $allRows');
+  allRows.forEach((element) {
+    var item = CartProduct.fromJson(element);
+
+    if (dates.contains(item.date) == false) {
+      dates.add(item.date);
+    }
+  });
+
+  return dates.length;
+}
+
+Future<int> cantProds() async {
+  return listP().then((value) => value.length);
+}
+
+Future<int> cantConsumers() async {
+  double cant = 0;
+  final allRows = await listConfig();
+
+  cant = cant +
+      allRows.first.adultos.toDouble() +
+      allRows.first.ninos37.toDouble() +
+      allRows.first.bebes.toDouble();
+
+  print('**CANT** $cant');
+
+  return cant.toInt();
+}
+
+void UpdateF(int id) {
+  Product prod_fi;
+  if (get(id, table).then((value) {
+        // var data = get(idfi, tableProducts);
+        prod_fi = value;
+        prod_fi.id = id;
+        if (prod_fi.cuota == 16) {
+          prod_fi.cuota = 10;
+          update(prod_fi.toJson(), table);
+          print('actualizo');
+          print(prod_fi.toJson());
+        }
+      }) !=
+      null) {}
+
+  // var prod_fc = get(idfc, tableProducts);
+}
+
+void UpdateL(int id) {
+  Product prod_fi;
+  if (get(id, table).then((value) {
+        // var data = get(idfi, tableProducts);
+        prod_fi = value;
+        prod_fi.id = id;
+        if (prod_fi.price == 2.5) {
+          prod_fi.price = 2.0;
+          update(prod_fi.toJson(), table);
+          print('actualizo');
+          print(prod_fi.toJson());
+        }
+      }) !=
+      null) {}
+
+  // var prod_fc = get(idfc, tableProducts);
+}
+
+void UpdateP(int id) {
+  Product prod_fi;
+  if (get(id, table).then((value) {
+        // var data = get(idfi, tableProducts);
+        prod_fi = value;
+        prod_fi.id = id;
+        if (prod_fi.price == 0.7) {
+          prod_fi.price = 1.25;
+          prod_fi.cuota = 11;
+          prod_fi.um = 'oz';
+          update(prod_fi.toJson(), table);
+          print('actualizo');
+          print(prod_fi.toJson());
+        }
+      }) !=
+      null) {}
+
+  // var prod_fc = get(idfc, tableProducts);
+}
+
+void UpdatePi(int id) {
+  Product prod_fi;
+  if (get(id, table).then((value) {
+        // var data = get(idfi, tableProducts);
+        prod_fi = value;
+        prod_fi.id = id;
+        if (prod_fi.price == 0.7) {
+          prod_fi.price = 15;
+          prod_fi.cuota = 0.5;
+          update(prod_fi.toJson(), table);
+          print('actualizo');
+          print(prod_fi.toJson());
+        }
+      }) !=
+      null) {}
+
+  // var prod_fc = get(idfc, tableProducts);
+}
+
+
+void AddCig() {
+  Product prod_fi = Product(title: 'Cigarros', price: 10, cuota: 8, um: 'caja', img: Assets.imgCriolloPopular, recomended: 0, kid: 0);
+
+  getS(prod_fi.title, table).then((value) {
+    if(value == null)
+      {
+
+        insert(prod_fi.toJson(), table);
+      }
+  });
+
+  // var prod_fc = get(idfc, tableProducts);
 }

@@ -1,33 +1,39 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mandaos/modules/products/models/product.dart';
-import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/services/database_helper.dart';
 import 'package:mandaos/services/db_helper.dart';
+import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/utils/constants.dart';
+import 'package:mandaos/widgets/ui/message_ui.dart';
 import 'package:provider/provider.dart';
 
 // Crea un Widget Form
 class ModifyProductScreen extends StatefulWidget {
-  Product prod;
+   ModifyProductScreen({required this.prod });
+
+   final Product prod;
 
   @override
   ModifyProductScreenState createState() {
     return ModifyProductScreenState();
   }
 
-  ModifyProductScreen(this.prod);
+  //ModifyProductScreen(this.prod);
 }
 
 // Crea una clase State correspondiente. Esta clase contendrá los datos relacionados con
 // el formulario.
 class ModifyProductScreenState extends State<ModifyProductScreen> {
   //String t= '';
-
+  //Product p = ModalRoute.of(context)!.settings.arguments as Product;
   TextEditingController _tcTittle = TextEditingController();
 
   TextEditingController _tcPrice = TextEditingController();
   TextEditingController _tcCuota = TextEditingController();
+
+
 
   // Crea una clave global que identificará de manera única el widget Form
   // y nos permita validar el formulario
@@ -37,11 +43,16 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //TextEditingController _tcCuota;
+
+
     Size size = MediaQuery.of(context).size;
     final _prodProvider = Provider.of<ProductProvider>(context, listen: false);
 
     // Crea un widget Form usando el _formKey que creamos anteriormente
+
+   // _tcTittle.text = prod.title;
+   // _tcCuota.text = prod.cuota.toString();
+  //  _tcPrice.text = prod.price.toString();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -49,25 +60,15 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
         backgroundColor: kPrimaryColor,
 
         elevation: 0,
-        /*actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.shopping_bag,
-                size: 32.0,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            )
-          ],*/
 
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios_outlined,
+            Icons.arrow_back,
             size: 32,
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context, widget.prod);
           },
         ),
       ),
@@ -214,14 +215,12 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
                               print(widget.prod.price);
                               if (id.toString().length > 0) {
                                 _prodProvider.updateToCatalog(widget.prod);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        'Se modificaron los datos del producto correctamente.'),
-                                  ),
-                                );
-                                Navigator.of(context).pop();
+                                Navigator.pop(context, widget.prod);
+                                //Navigator.popUntil(context, ModalRoute.withName('products'));
                               }
+                            }
+                            else{
+                              print('El formulario no es valido');
                             }
                           },
                           style: ButtonStyle(
@@ -274,11 +273,26 @@ class ModifyProductScreenState extends State<ModifyProductScreen> {
 
   @override
   void initState() {
+
+
     super.initState();
-    _tcTittle.addListener(() {});
+
 
     _tcTittle.text = widget.prod.title;
     _tcPrice.text = widget.prod.price.toString();
     _tcCuota.text = widget.prod.cuota.toString();
+
+   /* Product p = ModalRoute.of(context)!.settings.arguments as Product;
+
+    _tcTittle.text = p.title;
+
+
+    _tcPrice.text = p.price.toString();
+    _tcCuota.text = p.cuota.toString();*/
+
+/*
+    _tcTittle.text = prod.title;
+    _tcPrice.text = prod.price.toString();
+    _tcCuota.text = prod.cuota.toString();*/
   }
 }

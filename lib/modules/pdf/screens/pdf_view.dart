@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:mandaos/utils/constants.dart';
+import 'package:mandaos/utils/funtions.dart';
 import 'package:path/path.dart';
 
 class PDFViewerPage extends StatefulWidget {
@@ -28,6 +30,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kPrimaryColor,
         title: Text(name),
         actions: pages >= 2
         ? [
@@ -57,6 +60,14 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
         // pageSnap: false,
         // pageFling: false,
         onRender: (pages) => setState(() => this.pages = pages),
+        onError: (error){
+          print('Perro');
+          //Message('Error al abrir la url del Tribuna', context);
+        },
+        onPageError: (page, error){
+
+          //Message('Error al abrir la url del Tribuna', context);
+        },
         onViewCreated: (controller) =>
             setState(() => this.controller = controller),
         onPageChanged: (indexPage, _) =>

@@ -1,4 +1,6 @@
 
+import 'package:intl/intl.dart';
+
 final String tableCartProducts = 'cartProducts';
 
 class CartProduct {
@@ -38,7 +40,7 @@ class CartProduct {
 
     return CartProduct(
       id: val,
-      date: json[CartProductFields.date] as String,
+      date: DateFormat('dd/MM/yyyy').format(DateTime.parse(json[CartProductFields.date])) ,
       title: json[CartProductFields.title] as String,
       price: json[CartProductFields.price] as double,
       cuota: json[CartProductFields.cuota] as double,

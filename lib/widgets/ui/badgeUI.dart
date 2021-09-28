@@ -25,9 +25,9 @@ class BadgeUI extends StatelessWidget {
 
               ),
               onTap: (){
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(builder: (context) => BuyProductScreen()),
+                  'buy',
                 );
               },
             ),

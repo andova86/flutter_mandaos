@@ -2,9 +2,9 @@
 class Assets {
   Assets._();
 
-  static const String assetsGoc2021ex410 = 'assets/goc2021ex410.pdf';
   static const String assetsImgPolloKid = 'assets/img/polloKid.png';
   static const String assetsImgProductos = 'assets/img/productos.png';
+  static const String fontsEskoolRegular = 'assets/fonts/EskoolRegular.ttf';
   static const String fontsUbuntuRegular = 'assets/fonts/UbuntuRegular.ttf';
   static const String imgAceite = 'assets/img/aceite.jpg';
   static const String imgAceiteCocinerito = 'assets/img/aceiteCocinerito.jpg';
@@ -13,6 +13,7 @@ class Assets {
   static const String imgArrozNacional = 'assets/img/arrozNacional.jpg';
   static const String imgAzucarBlanca = 'assets/img/azucarBlanca.jpg';
   static const String imgAzucarPrieta = 'assets/img/azucarPrieta.jpg';
+  static const String imgBalita = 'assets/img/balita.jpg';
   static const String imgCafeHola = 'assets/img/cafeHola.jpg';
   static const String imgCanasta = 'assets/img/canasta.jpg';
   static const String imgCarrito = 'assets/img/carrito.png';
@@ -21,6 +22,7 @@ class Assets {
   static const String imgChicharos = 'assets/img/chicharos.jpg';
   static const String imgCompota = 'assets/img/compota.jpg';
   static const String imgCompra = 'assets/img/compra.png';
+  static const String imgCriolloPopular = 'assets/img/criolloPopular.jpg';
   static const String imgCubaarroz = 'assets/img/cubaarroz.jpg';
   static const String imgDayli = 'assets/img/dayli.png';
   static const String imgDetalle = 'assets/img/detalle.png';
@@ -31,7 +33,6 @@ class Assets {
   static const String imgFrijolesColorados2 = 'assets/img/frijolesColorados2.jpg';
   static const String imgGoc2021ex410 = 'assets/img/goc2021ex410.pdf';
   static const String imgHelpCart = 'assets/img/helpCart.png';
-  static const String imgHelpModify = 'assets/img/helpModify.png';
   static const String imgHelpModifyProduct = 'assets/img/helpModifyProduct.png';
   static const String imgHistorial = 'assets/img/historial.png';
   static const String imgHome = 'assets/img/home.png';
@@ -62,6 +63,7 @@ class Assets {
   static const String imgPro = 'assets/img/pro.png';
   static const String imgProductos = 'assets/img/productos.jpg';
   static const String imgProductoss = 'assets/img/productoss.png';
+  static const String imgReportes = 'assets/img/reportes.png';
   static const String imgSal = 'assets/img/sal.jpg';
   static const String imgSninos = 'assets/img/sninos.png';
   static const String imgSpaguetis = 'assets/img/spaguetis.png';

@@ -19,7 +19,7 @@ class CardProductHome extends StatelessWidget {
         " " +
         product.um +
         " por persona a " +
-        product.price.toStringAsFixed(2) +
+        product.price.toStringAsFixed(2).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "").replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") +
         " CUP";
     double t = product.price * product.cuota * cantPeople;
     String total = "\$ " + t.toStringAsFixed(2) + " cup";
@@ -70,6 +70,7 @@ class CardProductHome extends StatelessWidget {
               onPressed: () {
                 _prodProvider.addToCatalog(product);
                 final snackBar = SnackBar(
+                  duration: Duration(seconds: 1),
                   behavior: SnackBarBehavior.floating,
                   content: Text('Se añadió ' + product.title + " al carrito de compras."),
                   action: SnackBarAction(

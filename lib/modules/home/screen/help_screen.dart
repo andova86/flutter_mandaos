@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mandaos/screens/home/splash_screen.dart';
+import 'package:mandaos/modules/home/screen/splash_screen.dart';
 
 class HelpScreen extends StatelessWidget {
 

@@ -24,6 +24,7 @@ class ProductProvider with ChangeNotifier {
 
 
   }
+
   void updateToCatalog(Product itemModel) {
     for(int i = 0; i < _products.length; i++)
       {
@@ -48,6 +49,30 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  int total()
+  {
+    int vtotal = 0;
+    print('Hay ${_products.length} elementos');
+    for (int i = 0; i < _products.length; i++) {
+
+      double t = _products[i].price * _products[i].cuota * _products[i].people;
+      vtotal = vtotal + t.round();
+    }
+
+    return vtotal;
+  }
+
+  void applyAllCantPeople(int people)
+  {
+
+    print('Hay ${_products.length} elementos');
+    for (int i = 0; i < _products.length; i++) {
+
+      _products[i].people = people;
+      updateToCatalog(_products[i]);
+    }
+
+      }
 
 
 

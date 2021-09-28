@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mandaos/models/expansion_pannel.dart';
+import 'package:mandaos/modules/home/models/expansion_pannel.dart';
 import 'package:mandaos/utils/constants.dart';
+import 'package:mandaos/utils/headers.dart';
 
 class FaqScreen extends StatefulWidget {
   const FaqScreen({Key? key}) : super(key: key);
@@ -33,68 +34,18 @@ class _FaqScreenState extends State<FaqScreen> {
 
         backgroundColor: kPrimaryColor,
         elevation: 0,
-       /* actions: [
-          IconButton(onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HistoricalBuyScreen()),
-            );
-          }, icon: Icon(Icons.history_outlined, color: Colors.white,))
-        ],*/
-        /*actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.shopping_bag,
-                size: 32.0,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            )
-          ],*/
+
       ),
 
       body: SafeArea(
         maintainBottomViewPadding: false,
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.only(
-                  left: kDefaultPadding, right: kDefaultPadding, bottom: 5),
-              height: size.height * 0.06,
-              decoration: BoxDecoration(
-
-                  color: kPrimaryColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(36),
-                      bottomRight: Radius.circular(36))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      'Preguntas Frecuentes',
-                      style: TextStyle(
-                          fontSize: result < 480 ? 16 : 20,
-                          color: Colors.white,
-                          fontFamily: 'UbuntuRegular'),
-                    ),
-                  ),
-                  //Image.network('assets/img/pro.png'),
-                  Icon(
-                    Icons.question_answer_outlined,
-                    size: result < 480 ? 26 : 30,
-                    color: kSecondaryColor,
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 20,),
+           const HeaderM(title: 'Preguntas Frecuentes', ico: Icons.question_answer_outlined),
 
             Expanded(
-              child: Container(
+              child:
+              Container(
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.all(10),
                 child:

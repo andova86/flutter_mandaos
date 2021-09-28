@@ -11,9 +11,10 @@ class Product {
   String img;
   int recomended;
   int kid;
+  int people;
 
   Product(
-      {required this.title, required this.price, required this.cuota, required this.um, required this.img, int? id , required this.recomended, required this.kid});
+      {required this.title, required this.price, required this.cuota, required this.um, required this.img, int? id , required this.recomended, required this.kid, this.people=1});
 
   Map<String, dynamic> toJson() =>
       {
