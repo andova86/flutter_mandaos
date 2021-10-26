@@ -1,4 +1,4 @@
-// @dart=2.9
+
 import 'package:after_layout/after_layout.dart';
 import 'package:apklis_payment_checker/apklis_info.dart';
 import 'package:apklis_payment_checker/apklis_info_checker.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mandaos/modules/products/data/ListProducts.dart';
 import 'package:mandaos/modules/products/provider/product_provider.dart';
-import 'package:mandaos/modules/products/screen/modify_product_screen.dart';
+import 'package:mandaos/modules/products/screen/add_product_screen.dart';
 import 'package:mandaos/modules/products/screen/product_detail_screen.dart';
 import 'package:mandaos/routes/routes.dart';
 import 'package:mandaos/modules/home/screen/home_screen.dart';
@@ -21,27 +21,22 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'modules/home/screen/paid.dart';
 import 'modules/products/models/product.dart';
 
-
-
 void main() => runApp(
-  MultiProvider(
-    providers: [
-      //ChangeNotifierProvider(create: (_) => ColorProvider()),
-      ChangeNotifierProvider(create: (_) => ProductProvider())
-    ],
-    child: MyApp(),
-  ),
-);
+      MultiProvider(
+        providers: [
+          //ChangeNotifierProvider(create: (_) => ColorProvider()),
+          ChangeNotifierProvider(create: (_) => ProductProvider())
+        ],
+        child: MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   //DatabaseHelper data = new DatabaseHelper();
- // final dbHelper = new DatabaseHelper();
+  // final dbHelper = new DatabaseHelper();
   static int sp = 0;
-
-
 
   // This widget is the root of your application.
   @override
@@ -51,48 +46,46 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Mis Mandaos',
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate
-      ],
+      localizationsDelegates: [GlobalMaterialLocalizations.delegate],
       supportedLocales: [
         const Locale('es'),
         //const Locale('fr')
       ],
-     // themeMode: ThemeMode.light,
+      // themeMode: ThemeMode.light,
       theme: ThemeData(
         fontFamily: 'UbuntuRegular',
         primaryColor: kPrimaryColor,
-        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor,fontFamily: 'UbuntuRegular',),
+        textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: kTextColor,
+              fontFamily: 'UbuntuRegular',
+            ),
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
-       // dialogTheme: ,
+        // dialogTheme: ,
         pageTransitionsTheme: PageTransitionsTheme(builders: {
           TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
-          TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),
-
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        }),
       ),
       //darkTheme: darkThemeData(context),
-      home:  Splash(),
+      home: Splash(),
       routes: getAplicationRoutes(),
       //initialRoute: Splash().,
-      onGenerateRoute: (RouteSettings settings ){
-
-        if (settings.name == 'productmodify') {
+      onGenerateRoute: (RouteSettings settings) {
+        if (settings.name == 'addproduct') {
           // Cast the arguments to the correct
           // type: ScreenArguments.
-          final prod = settings.arguments as Product;
+          final id = settings.arguments as int;
 
           // Then, extract the required data from
           // the arguments and pass the data to the
           // correct screen.
           return MaterialPageRoute(
             builder: (context) {
-              return ModifyProductScreen(prod: prod);
+              return AddProductScreen( index: id,);
             },
           );
         }
@@ -100,53 +93,36 @@ class MyApp extends StatelessWidget {
         if (settings.name == 'productdetail') {
           // Cast the arguments to the correct
           // type: ScreenArguments.
-          final prod = settings.arguments as Product;
+          //final prod = settings.arguments as Product;
+          final id = settings.arguments as int;
 
           // Then, extract the required data from
           // the arguments and pass the data to the
           // correct screen.
           return MaterialPageRoute(
             builder: (context) {
-              return ProductDetailScreen(product: prod);
+              return ProductDetailScreen(idProd: id,);
             },
           );
         }
 
-
-
-
-       return MaterialPageRoute(builder: (BuildContext context) => HomeScreen()
-       );
+        return MaterialPageRoute(
+            builder: (BuildContext context) => HomeScreen());
       },
       //home: TestScreen(),
     );
   }
-
-
-
-
 }
-
 
 class Splash extends StatefulWidget {
   String result = '';
-
 
   @override
   SplashState createState() => new SplashState();
 }
 
 class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
-
-
-
-
-
   Future checkFirstSeen() async {
-
-
-
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
 
@@ -168,42 +144,41 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
       print(buildNumber);
     });
 
-   initDatabase();
-    UpdateF(5);
+    initDatabase();
+ /*   UpdateF(5);
     UpdateF(6);
     UpdateL(16);
     UpdateP(20);
     UpdatePi(22);
-
+*/
     //AddCig();
 
     if (_seen) {
+      AddCig();
+
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(builder: (context) => new HomeScreen()),
+          ModalRoute.withName('home'));
+     /*
 
       getApklisInfo().then((value) {
-        print('Apklis esta instalado: ${value.isInstalled}');
-        print('Code: ${value.versionCode}');
-        print('Name: ${value.versionName}');
+        print('Apklis esta pagado: ${value.isInstalled}');
+        //print('Code: ${value.versionCode}');
+        //print('Name: ${value.versionName}');
 
-
-
-        if(value.isInstalled == false)
-        {
-
+       *//* if (value.isInstalled == false) {
           Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => new Paid()), ModalRoute.withName('paid'));
-
-        }
-        else{
+              new MaterialPageRoute(builder: (context) => new Paid()),
+              ModalRoute.withName('paid'));
+        } else {
           AddCig();
 
-
-
           Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => new HomeScreen()), ModalRoute.withName('home'));
-        }
-
-      } );
-      /*_getApklis(packageName).then((value) {
+              new MaterialPageRoute(builder: (context) => new HomeScreen()),
+              ModalRoute.withName('home'));
+        }*//*
+      });
+      *//*_getApklis(packageName).then((value) {
 
         print('El valor es: ${value.paid}   ${value.username} ');
         if(value.paid == false)
@@ -216,47 +191,52 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
 
       } );*/
 
-
-
     } else {
+      _initConfig();
+      _initProduct();
 
-      getApklisInfo().then((value) async {
+      await prefs.setBool('seen', true);
+      Navigator.of(context).pushAndRemoveUntil(
+          new MaterialPageRoute(builder: (context) => new SplashScreen()),
+          ModalRoute.withName('splash'));
+
+     /* getApklisInfo().then((value) async {
         print('Apklis esta instalado: ${value.isInstalled}');
         print('Code: ${value.versionCode}');
         print('Name: ${value.versionName}');
 
-        if(value.isInstalled == false)
-        {
-
+        if (value.isInstalled == false) {
           Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(builder: (context) => new HomeScreen()),
+              ModalRoute.withName('home'));
+
+          *//* Navigator.of(context).pushAndRemoveUntil(
               new MaterialPageRoute(builder: (context) => new Paid()), ModalRoute.withName('paid'));
-
-        }
-        else{
-
+*//*
+        } else {
           _initProduct();
           _initConfig();
           await prefs.setBool('seen', true);
           Navigator.of(context).pushAndRemoveUntil(
-              new MaterialPageRoute(builder: (context) => new SplashScreen()), ModalRoute.withName('splash'));
-
+              new MaterialPageRoute(builder: (context) => new SplashScreen()),
+              ModalRoute.withName('splash'));
         }
-
-      } );
-
-       }
+      });*/
+    }
   }
 
-
-  Future<ApklisPaymentStatus> _getApklis(String packageName) async {
-    var status = await ApklisPaymentChecker.isPurchased(packageName);
+  Future<ApklisPaymentStatus> _getApklis(String pack) async {
+    var status = await ApklisPaymentChecker.isPurchased(pack);
 
     return status;
-
   }
 
   Future<ApklisInfo> getApklisInfo() async {
-    final apklisInfo = await ApklisInfoCheck.getApklisInfo();
+    var apklisInfo = await ApklisInfoCheck.getApklisInfo();
+
+    print("La version: ${apklisInfo.versionName}");
+    print("La version: ${apklisInfo.versionCode}");
+   // print(apklisInfo.versionCode);
     return apklisInfo;
   }
 
@@ -267,17 +247,14 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Center(
-        child: CircularProgressIndicator(
-
-        ),
-
+        child: CircularProgressIndicator(),
       ),
     );
   }
 }
 
 void _initProduct() async {
-  int count = await queryRowCount();
+  int? count = await queryRowCount();
   print('La cantidad de productos es: ' + count.toString());
 
   if (count == 0) {
@@ -298,6 +275,7 @@ void _initProduct() async {
     }
   }
 }
+
 void _initConfig() async {
   List<Map> items = await queryAllRows(table_config);
   print(items);
@@ -309,15 +287,9 @@ void _initConfig() async {
       columnAdultos: 0,
     };
 
-    final id =  insert(row2, table_config);
+    final id = insert(row2, table_config);
     print('***** Configuración Inicial *****************');
     List<Map> items2 = await queryAllRows(table_config);
     print(items2.length.toString() + " elementos");
   }
-
-
-
-
-
 }
-

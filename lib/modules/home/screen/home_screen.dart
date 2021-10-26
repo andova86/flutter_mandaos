@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mandaos/modules/products/models/product.dart';
-import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/modules/products/screen/list_product_screen.dart';
 
 import 'package:mandaos/services/db_helper.dart';
@@ -14,8 +13,6 @@ import 'package:mandaos/utils/headers.dart';
 import 'package:mandaos/widgets/ui/badgeUI.dart';
 import 'package:mandaos/modules/home/widget/card_carrousel.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:provider/provider.dart';
-import 'package:mandaos/modules/home/screen/paid.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,28 +25,20 @@ class _HomeScreenState extends State<HomeScreen> {
   String version = '';
   List<Product> list = [];
 
-   int cantProductos = 0;
-  int cantBuy= 0;
-  int cantGastos =0;
-  int cantCons =0;
+  int cantProductos = 0;
+  int cantBuy = 0;
+  int cantGastos = 0;
+  int cantCons = 0;
 
   // List<Product> filteredProd = [];
   //String _searchText = "";
 
   @override
   Widget build(BuildContext context) {
-    final _prodProvider = Provider.of<ProductProvider>(context, listen: false);
-
-    Size size = MediaQuery.of(context).size;
-
     print('building Pantalla Principal');
 
-
-
-
-
     return Scaffold(
-      drawer: _drawer(version: version),
+      drawer: _Drawer(version: version),
       appBar: AppBar(
         //title: Text('Productos de la Bodega'),
         backgroundColor: kPrimaryColor,
@@ -68,14 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[BadgeUI()],
       ),
       body: DoubleBackToCloseApp(
-
         snackBar: const SnackBar(
           duration: Duration(seconds: 1),
-
           content: Text('Toca de nuevo para salir de la aplicación.'),
-
         ),
-
         child: Column(
           children: [
             const HeaderM(title: 'Bienvenido', ico: Icons.home),
@@ -92,54 +77,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              _recomended(),
+                              _Recomended(),
                             ],
                           ),
-
-
                         ],
                       ),
                     ),
-
                     Column(
                       children: [
                         SizedBox(
                           height: 10,
                         ),
-                     /*   CarouselSlider(
-                          options: CarouselOptions(
-                            height: size.height * 0.25,
-                            aspectRatio: 16 / 9,
-                            viewportFraction: 0.65,
 
-                            initialPage: 0,
-                            enableInfiniteScroll: false,
-                            reverse: false,
-                            autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 3),
-                            autoPlayAnimationDuration:
-                            Duration(milliseconds: 800),
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enlargeCenterPage: true,
-                            scrollPhysics: BouncingScrollPhysics(),
-                            //onPageChanged: callbackFunction,
-                            scrollDirection: Axis.horizontal,
-                          ),
-                          items: list.map((prod) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return CardCarrousel(prod: prod);
-                              },
-                            );
-                          }).toList(),
-                        ),*/
 
                         Swiper(
-
-                          itemBuilder: (BuildContext context,int index){
+                          itemBuilder: (BuildContext context, int index) {
                             return CardCarrousel(prod: list[index]);
                           },
-
                           itemCount: list.length,
                           itemWidth: 230.0,
                           itemHeight: 230.0,
@@ -147,7 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           viewportFraction: 0.8,
                           scale: 0.9,
                           autoplay: true,
-
 
                         ),
                         SizedBox(
@@ -157,9 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         // const _doBuy(),
                       ],
                     ),
-
-                    const _steps(),
-                   /* Row(
+                    const _Steps(),
+                    /* Row(
                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
@@ -178,51 +130,41 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),*/
                     Row(
                       children: [
-                        _homeBox(
+                        _HomeBox(
                           title: 'Compras ',
                           subtitle: cantBuy.toString(),
                           icon: CupertinoIcons.shopping_cart,
                           route: 'buy',
                           color: Color(0xffF2EBE9),
                         ),
-                        _homeBox(
-
-                          title: 'Gastos (cup)' ,
+                        _HomeBox(
+                          title: 'Gastos (cup)',
                           subtitle: cantGastos.toString(),
                           icon: CupertinoIcons.money_dollar_circle,
                           color: Color(0xffF0F0F3),
                           route: 'chart',
                         ),
-
-
-
                       ],
                     ),
-
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _homeBox(
+                        _HomeBox(
                           title: 'Productos ',
                           subtitle: '$cantProductos',
                           icon: CupertinoIcons.list_bullet_below_rectangle,
                           color: kotherColor,
                           route: 'products',
                         ),
-
-                        _homeBox(
+                        _HomeBox(
                           title: 'Consumidores',
                           subtitle: cantCons.toString(),
                           icon: CupertinoIcons.group,
                           color: Color(0xffDAF1E4),
                           route: 'config',
                         ),
-
-
                       ],
                     ),
-
-
                   ],
                 ),
               ),
@@ -232,7 +174,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 
   @override
   void initState() {
@@ -263,8 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
     getCantBuy();
     getCantCons();
 
-
-
     //dbHelper.listConfig();
   }
 
@@ -276,14 +215,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Future refreshData() async {
     // dbHelper.listBuy();
     //print();
-    List<Product> lista = await listRecomended();
+   listRecomended().then((value) {
+
+     setState(() {
+       list = value;
+       //list.shuffle();
+       // filteredProd = this.list;
+     });
+   });
     print(list);
 
-    setState(() {
-      list = lista;
-      //list.shuffle();
-      // filteredProd = this.list;
-    });
+
   }
 
   Future getCantBuys() async {
@@ -302,55 +244,48 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-
   Future getCantBuy() async {
+    int c = await cantBuysInYear(DateTime.now().year);
 
-   int c = await cantBuysInYear(DateTime.now().year);
-
-   setState(() {
-     cantGastos = c;
-   });
+    setState(() {
+      cantGastos = c;
+    });
   }
 
-
   Future getCantCons() async {
-
     int c = await cantConsumers();
 
     setState(() {
       cantCons = c;
     });
   }
-
-
 }
 
-class TriangleClipper extends CustomClipper<Path>{
-
+class TriangleClipper extends CustomClipper<Path> {
   @override
-  Path getClip(Size size){
-
+  Path getClip(Size size) {
     final path = Path();
-    path.moveTo(0.0,0.0);
+    path.moveTo(0.0, 0.0);
     path.lineTo(size.width, size.height);
     path.lineTo(0.0, size.height);
     path.close();
     return path;
 
-   return path;
+    return path;
   }
 
   @override
   bool shouldReclip(TriangleClipper oldClipper) => false;
 }
 
-class _homeBox extends StatelessWidget {
-  const _homeBox({
+class _HomeBox extends StatelessWidget {
+  const _HomeBox({
     Key? key,
     required this.title,
     required this.subtitle,
-
-    required this.color, required this.icon, required this.route,
+    required this.color,
+    required this.icon,
+    required this.route,
   }) : super(key: key);
 
   final String title;
@@ -362,12 +297,9 @@ class _homeBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-
-      Expanded(
-      child:
-      GestureDetector(
-        onTap: (){
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
           Navigator.pushNamed(context, route);
         },
         child: Container(
@@ -378,9 +310,7 @@ class _homeBox extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             color: color,
           ),
-          child:
-
-          Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
@@ -395,23 +325,27 @@ class _homeBox extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: kPrimaryColor.withOpacity(0.8)),
                     )),
-                   // Divider(height: 10,color: Colors.black12,endIndent: 20,indent: 10,thickness: 2,),
+                    // Divider(height: 10,color: Colors.black12,endIndent: 20,indent: 10,thickness: 2,),
 
                     FittedBox(
-                      child: Text(subtitle,style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: kPrimaryColor),),
+                      child: Text(
+                        subtitle,
+                        style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: kPrimaryColor),
+                      ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Icon(icon, color: kPrimaryColor.withOpacity(.7),)
+                    Icon(
+                      icon,
+                      color: kPrimaryColor.withOpacity(.7),
+                    )
                   ],
                 ),
               ),
-
-
             ],
           ),
         ),
@@ -420,8 +354,8 @@ class _homeBox extends StatelessWidget {
   }
 }
 
-class _recomended extends StatelessWidget {
-  const _recomended();
+class _Recomended extends StatelessWidget {
+  const _Recomended();
 
   @override
   Widget build(BuildContext context) {
@@ -436,8 +370,8 @@ class _recomended extends StatelessWidget {
   }
 }
 
-class _drawer extends StatelessWidget {
-  const _drawer({
+class _Drawer extends StatelessWidget {
+  const _Drawer({
     Key? key,
     required this.version,
   }) : super(key: key);
@@ -505,7 +439,9 @@ class _drawer extends StatelessWidget {
                   //Navigator.of(context).pop();
 
                   Navigator.of(context).pushAndRemoveUntil(
-                      new MaterialPageRoute(builder: (context) => new HomeScreen()), ModalRoute.withName('home'));
+                      new MaterialPageRoute(
+                          builder: (context) => new HomeScreen()),
+                      ModalRoute.withName('home'));
                 },
                 leading: Icon(
                   Icons.home_filled,
@@ -626,6 +562,27 @@ class _drawer extends StatelessWidget {
               ListTile(
                 onTap: () {
                   Navigator.of(context).pop();
+                  Navigator.pushNamed(context, 'copy');
+                },
+                leading: Icon(
+                  Icons.backup,
+                  color: kSecondaryColor,
+                  size: 36,
+                ),
+                title: Text(
+                  'Copia de Seguridad',
+                  style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 16,
+                      fontFamily: 'UbuntuRegular'),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.of(context).pop();
                   Navigator.pushNamed(context, 'config');
                 },
                 leading: Icon(
@@ -733,8 +690,8 @@ class _drawer extends StatelessWidget {
   }
 }
 
-class _doBuy extends StatelessWidget {
-  const _doBuy({
+class _DoBuy extends StatelessWidget {
+  const _DoBuy({
     Key? key,
   }) : super(key: key);
 
@@ -815,8 +772,8 @@ class _doBuy extends StatelessWidget {
   }
 }
 
-class _steps extends StatelessWidget {
-  const _steps({
+class _Steps extends StatelessWidget {
+  const _Steps({
     Key? key,
   }) : super(key: key);
 
@@ -826,8 +783,7 @@ class _steps extends StatelessWidget {
       width: double.maxFinite,
       padding: EdgeInsets.all(20),
       child: Column(
-
-         crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'En solo 3 pasos, verifíca tu compra.  ',
@@ -873,7 +829,6 @@ class _steps extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-
         ],
       ),
     );

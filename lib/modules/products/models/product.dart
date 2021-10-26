@@ -12,9 +12,10 @@ class Product {
   int recomended;
   int kid;
   int people;
+  int? prodUser;
 
   Product(
-      {required this.title, required this.price, required this.cuota, required this.um, required this.img, int? id , required this.recomended, required this.kid, this.people=1});
+      {required this.title, required this.price, required this.cuota, required this.um, required this.img, int? id , required this.recomended, required this.kid, this.people=1,  int? prodUser});
 
   Map<String, dynamic> toJson() =>
       {
@@ -26,6 +27,8 @@ class Product {
         ProductFields.img: img,
         ProductFields.recomended: recomended,
         ProductFields.kid: kid,
+        ProductFields.prodUser: prodUser,
+
       };
 
  
@@ -33,7 +36,8 @@ class Product {
   static Product fromJson(Map<String, dynamic> json) {
 
     int val = json['_id'] as int;
-
+    int val2 = json['prodUser'] as int;
+  print(val2);
 
     return Product(
       id: val,
@@ -44,6 +48,7 @@ class Product {
       img: json[ProductFields.img] as String,
       recomended: json[ProductFields.recomended] as int,
       kid: json[ProductFields.kid] as int,
+      prodUser: val2,
     );
   }
 
@@ -65,6 +70,7 @@ class ProductFields {
   static final String img = 'img';
   static final String recomended = 'recomended';
   static final String kid = 'kid';
+  static final String prodUser = 'prodUser';
 
 
 }

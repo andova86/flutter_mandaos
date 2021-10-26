@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +22,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
   List<SalesData> dataSales = [];
   late TooltipBehavior _tooltipBehavior;
+  double cantSales = 0;
 
   bool showAvg = false;
   String dropdownValue = Mes(DateTime.now().month);
@@ -31,7 +31,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
@@ -39,7 +38,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ),
       body: Column(
         children: [
-         const HeaderM(title: 'Gastos', ico: Icons.home),
+          const HeaderM(title: 'Gastos', ico: Icons.home),
           Expanded(
               child: SingleChildScrollView(
             child: Column(
@@ -68,18 +67,18 @@ class _LineChartSample2State extends State<LineChartSample2> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 SfCartesianChart(
                     // Initialize category axis
                     primaryXAxis: CategoryAxis(),
                     tooltipBehavior: _tooltipBehavior,
-
-
                     title: ChartTitle(
-
-
-                        text: 'Compras del mes ( CUP )',
+                        text: 'Total: ' +
+                            cantSales
+                                .toStringAsFixed(2)
+                                .replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") +
+                            ' CUP',
                         textStyle: TextStyle(
                             fontFamily: 'UbuntuRegular',
                             fontWeight: FontWeight.bold,
@@ -92,7 +91,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
                       LineSeries<SalesData, String>(
                         // Bind data source
                         dataSource: dataSales,
-
 
                         xValueMapper: (SalesData sales, _) => sales.year,
                         yValueMapper: (SalesData sales, _) => sales.sales,
@@ -118,6 +116,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   void initState() {
     super.initState();
     _getBuys();
+
     _tooltipBehavior = TooltipBehavior(
         enable: true,
         borderColor: kotherColor,
@@ -125,10 +124,8 @@ class _LineChartSample2State extends State<LineChartSample2> {
         color: kPrimaryColor,
         tooltipPosition: TooltipPosition.auto,
         header: 'Precio',
-       // format: '3 po',
+        // format: '3 po',
         activationMode: ActivationMode.singleTap);
-
-
   }
 
   @override
@@ -142,44 +139,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
       //print('**-*-LISTAAAAAAA*-****-**-jlk');
       dataSales = dataFL3;
     });
-  }
 
-  _selectDate(BuildContext context) async {
-    final DateTime? selected = await showDatePicker(
-      context: context,
-      initialDate: date,
-      //initialDatePickerMode: DatePickerMode.year,
-      firstDate: DateTime(DateTime.now().year - 20),
-      lastDate: DateTime(DateTime.now().year + 20),
-      helpText: 'Seleccione el mes a visualizar las compras',
-      cancelText: 'Cancelar',
-      confirmText: 'Aceptar',
-
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: kPrimaryColor, // header background color
-              onPrimary: kSecondaryColor, // header text color
-              onSurface: kPrimaryColor.withOpacity(.8), // body text color
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                primary: kPrimaryColor, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (selected != null && selected != date) {
-      setState(() {
-        date = selected;
-      });
+    if (dataSales.length > 0) {
+      cantSales = cantSalesMonth(dataSales);
+    } else {
+      cantSales = 0;
     }
   }
+
 
   static const TextStyle? style = TextStyle(color: Colors.white, fontSize: 30);
 
@@ -197,7 +164,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
                   print(selectedValue);
 
                   _getBuys();
-
                 });
               },
               itemExtent: 40.0,
@@ -269,27 +235,34 @@ String Mes(int month) {
       result = 'Diciembre';
       break;
 
-    default: '';
+    default:
+      '';
   }
 
- return result;
+  return result;
+}
+
+double cantSalesMonth(List<SalesData> dataSales) {
+  double cant = 0;
+
+  dataSales.forEach((element) {
+    cant = cant + element.sales;
+  });
+
+  return cant;
 }
 
 Future<List<SalesData>> getDataList(int month) async {
-
   List<String> list = [];
   List<SalesData> list2 = [];
 
-  DateTime daterec = new DateTime(DateTime.now().year,month, 1 );
+  DateTime daterec = new DateTime(DateTime.now().year, month, 1);
   String first = findFirstDateOfTheMonth(daterec).toIso8601String();
   String last = findLastDateOfTheMonth(daterec).toIso8601String();
 
-
-
-  int total = 0;
-  print('El mes recibido es: ${month}' );
-  print('Empieza: ${first}' );
-  print('Termina: ${last}' );
+  print('El mes recibido es: ${month}');
+  print('Empieza: ${first}');
+  print('Termina: ${last}');
   final allRows = await getBuybyDates(first, last, tableCartProducts);
   print('La cantidad de elementos es: ${allRows.length}');
 
@@ -312,12 +285,13 @@ Future<List<SalesData>> getDataList(int month) async {
     double cant = 0;
     for (int k = 0; k < allRows.length; k++) {
       double t = allRows[k].price * allRows[k].cuota * allRows[k].cant;
-      cant = cant + t.round();
+      cant = cant + t;
     }
 
     if (cant > 0) {
       DateTime d = DateFormat('dd/MM/yyy').parse(list[j]);
-      SalesData data = new SalesData( d.day.toString()+ " "+DateFormat('MMM').format(d), cant);
+      SalesData data = new SalesData(
+          d.day.toString() + " " + DateFormat('MMM').format(d), cant);
       list2.add(data);
     }
   }
@@ -349,7 +323,6 @@ DateTime getWeek(DateTime dateTime) {
 List<DateTime> weekDays(DateTime date, int numberOfweek) {
   List<DateTime> list = [];
 
-  bool verify = false;
 
   DateTime dateSelect = findFirstDateOfTheWeek(date);
 

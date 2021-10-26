@@ -5,8 +5,8 @@ import 'package:mandaos/modules/home/models/config.dart';
 import 'package:mandaos/services/database_helper.dart';
 import 'package:mandaos/services/db_helper.dart';
 import 'package:mandaos/utils/constants.dart';
+import 'package:mandaos/utils/funtions.dart';
 import 'package:mandaos/utils/headers.dart';
-import 'package:provider/provider.dart';
 
 
 
@@ -23,12 +23,13 @@ enum Colores { verde, azul, violeta }
 class _ConfigScreenState extends State<ConfigScreen> {
   //TextEditingController _filter = new TextEditingController();
 
-  Colores? _color = Colores.azul;
 
   List<Config> list = [];
   double value = 0;
   double value37 = 0;
   double value2 = 0;
+
+  double value64 = 0;
 
   double total = 0;
 
@@ -107,11 +108,165 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                   ],
                                 ),
                               )),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Slider(
+                                      value: value2,
+                                      min: 0,
+                                      max: 10,
+                                      divisions: 10,
+                                      activeColor: kPrimaryColor,
+                                      inactiveColor: Colors.blueGrey.shade400,
+                                      label: value2.round().toString(),
+                                      onChanged: (valueObj) =>
+                                          setState((){
+
+                                            this.value2 = valueObj;
+                                            this.total = valueObj + value37 + value + value64;
+                                          }),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        value2.round().toString() +
+                                            " bebes menores de 2 años.",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontFamily: 'UbuntuRegular',
+                                          color: kPrimaryColor.withOpacity(.7),
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Image.asset(
+                                'assets/img/ninos2.jpg',
+                                width: 60,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Slider(
+                                      value: value37,
+                                      min: 0,
+                                      max: 10,
+                                      divisions: 10,
+                                      activeColor: kPrimaryColor,
+                                      inactiveColor: Colors.blueGrey.shade400,
+                                      label: value37.round().toString(),
+                                      onChanged: (value_obj) =>
+                                          setState((){
+
+                                            this.value37 = value_obj;
+                                            this.total = value_obj + value2 + value +value64;
+                                          }),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        value37.round().toString() +
+                                            " niños de 3 a 7 años.",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontFamily: 'UbuntuRegular',
+                                          color: kPrimaryColor.withOpacity(.7),
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Image.asset(
+                                'assets/img/ninos.png',
+                                width: 60,
+                                // color: Colors.black12,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child:
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Slider(
+                                      value: value64,
+                                      min: 0,
+                                      max: 10,
+                                      divisions: 10,
+                                      activeColor: kPrimaryColor,
+                                      inactiveColor: Colors.blueGrey.shade400,
+                                      label: value64.round().toString(),
+                                      onChanged: (valueGet) =>
+                                          setState((){
+
+                                            this.value64 = valueGet;
+                                            this.total = valueGet + value2 + value37 + value;
+                                          }),
+                                    ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        value64.round().toString() +
+                                            " personas de 8 a 64 años",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontFamily: 'UbuntuRegular',
+                                          color: kPrimaryColor.withOpacity(.7),
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Image.asset(
+                                Assets.imgPersonas,
+                                width: 60,
+                                height: 40,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child:
+                                Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -127,7 +282,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                           setState((){
 
                                             this.value = value;
-                                            this.total = value + value2 + value37;
+                                            this.total = value + value2 + value37 + value64;
                                           }),
                                     ),
 
@@ -157,103 +312,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Slider(
-                                      value: value37,
-                                      min: 0,
-                                      max: 10,
-                                      divisions: 10,
-                                      activeColor: kPrimaryColor,
-                                      inactiveColor: Colors.blueGrey.shade400,
-                                      label: value37.round().toString(),
-                                      onChanged: (value_obj) =>
-                                          setState((){
 
-                                            this.value37 = value_obj;
-                                            this.total = value_obj + value2 + value;
-                                          }),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 20),
-                                      child: Text(
-                                        value37.round().toString() +
-                                            " niños de 3 a 7 años.",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontFamily: 'UbuntuRegular',
-                                          color: kPrimaryColor.withOpacity(.7),
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Image.asset(
-                                'assets/img/ninos.png',
-                                width: 60,
-                                // color: Colors.black12,
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Slider(
-                                      value: value2,
-                                      min: 0,
-                                      max: 10,
-                                      divisions: 10,
-                                      activeColor: kPrimaryColor,
-                                      inactiveColor: Colors.blueGrey.shade400,
-                                      label: value2.round().toString(),
-                                      onChanged: (valueObj) =>
-                                          setState((){
 
-                                            this.value2 = valueObj;
-                                            this.total = valueObj + value37 + value;
-                                          }),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 20),
-                                      child: Text(
-                                        value2.round().toString() +
-                                            " bebes menores de 2 años.",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          fontFamily: 'UbuntuRegular',
-                                          color: kPrimaryColor.withOpacity(.7),
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Image.asset(
-                                'assets/img/ninos2.jpg',
-                                width: 60,
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
                           Divider(),
                           SizedBox(
                             height: 10,
@@ -267,19 +327,15 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 c.adultos = value.toInt();
                                 c.bebes = value2.toInt();
                                 c.ninos37 = value37.toInt();
+
+                                c.splash = value64.toInt();
                                 c.id = 1;
                                 print('Id *-*-*-*-*-*-*');
                                 print(list[0].id);
                                 Future<int> id =  update(c.toJson(), table_config);
 
                                 if (id.toString().length > 0) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      duration: Duration(seconds: 1),
-                                      content: Text(
-                                          'Se modificaron los datos de la configuración correctamente.'),
-                                    ),
-                                  );
+                                  MessageSnackBar('Se modificaron los datos.', context, Icons.check, Colors.greenAccent);
                                 }
                               },
                                 style: ButtonStyle(
@@ -393,22 +449,30 @@ class _ConfigScreenState extends State<ConfigScreen> {
   }
 
   Future refreshData() async {
-    List<Config> lista = await listConfig();
-    print('*********** Listaaaaaaa');
-    print(lista.length.toString()+ " elemento " + lista[0].adultos.toString() + " adultos " + lista[0].id.toString());
+    listConfig().then((lista) {
+      print('*********** Listaaaaaaa $lista');
+      print(lista.length.toString()+ " elemento " + lista[0].adultos.toString() + " adultos " + lista[0].id.toString());
+
+      setState(() {
+        list = lista;
+
+        value = lista[0].adultos.toDouble();
+        value37 = lista[0].ninos37.toDouble();
+        value2 = lista[0].bebes.toDouble();
+        value64 = lista[0].splash.toDouble();
+
+        total = value + value37 + value2 + value64;
+
+        //list.shuffle();
+        //filteredProd = this.list;
+      });
+    }
+
+
+    );
+
     //print(list.length);
 
-    setState(() {
-      list = lista;
 
-      value = lista[0].adultos.toDouble();
-      value37 = lista[0].ninos37.toDouble();
-      value2 = lista[0].bebes.toDouble();
-
-      total = value + value37 + value2;
-
-      //list.shuffle();
-      //filteredProd = this.list;
-    });
   }
 }

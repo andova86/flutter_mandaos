@@ -39,7 +39,6 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     final _prodProvider = Provider.of<ProductProvider>(context, listen: false);
     //list = _prodProvider.products;
 
@@ -106,10 +105,10 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
             );
     }
 
-    Widget _FAB() {
+    Widget _fAB() {
       return FloatingActionButton(
         onPressed: () {
-          if (list.length > 0 ) {
+          if (list.length > 0) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
@@ -167,15 +166,10 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
                         )
                       ],
                     ));
-          }
-
-          else {
+          } else {
             print('Hay un error');
             print(list.length);
             print(value);
-
-
-
 
             if (list.length == 0) {
               Message("Debe seleccionar los productos a comprar.", context);
@@ -220,7 +214,7 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
               ))
         ],
       ),
-      floatingActionButton: _FAB(),
+      floatingActionButton: _fAB(),
       body: SafeArea(
         maintainBottomViewPadding: false,
         child: Column(
@@ -261,22 +255,20 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Slider(
-                              value: value,
-                              min: 0,
-                              max: 15,
-                              divisions: 15,
-                              activeColor: kPrimaryColor,
-                              inactiveColor: Colors.blueGrey.shade400,
-                              label: value.round().toString(),
-                              onChanged: (value) {
+                                value: value,
+                                min: 0,
+                                max: 15,
+                                divisions: 15,
+                                activeColor: kPrimaryColor,
+                                inactiveColor: Colors.blueGrey.shade400,
+                                label: value.round().toString(),
+                                onChanged: (value) {
                                   setState(() => this.value = value);
                                   setState(() => checkedValue = false);
-  }
-                            ),
+                                }),
                             Row(
                               children: [
                                 Expanded(
-
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
@@ -289,16 +281,13 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
                                     ),
                                   ),
                                 ),
-
                                 Expanded(
-                               
                                   child: CheckboxListTile(
                                     contentPadding: EdgeInsets.all(0),
-                                    
+
                                     title: FittedBox(
                                       child: Text(
                                         'Aplicar a todos',
-                                        
                                         style: TextStyle(
                                           fontSize: 12,
                                           fontFamily: 'UbuntuRegular',
@@ -337,8 +326,6 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
                           'assets/img/personas.png',
                           width: 40,
                         )*/
-
-
                     ],
                   ),
                 ],
@@ -377,7 +364,12 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
                   ),
                   Consumer<ProductProvider>(builder: (context, cart, child) {
                     return Text(
-                      "\$ " + "${cart.total()}" + ' CUP',
+                      " \$ " +
+                          cart
+                              .total()
+                              .toStringAsFixed(2)
+                              .replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") +
+                          ' CUP',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -436,6 +428,7 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
       setState(() {
         value = lista.first.adultos.toDouble() +
             lista.first.ninos37.toDouble() +
+            lista.first.splash.toDouble() +
             lista.first.bebes.toDouble();
       });
       print("se actualizo la lista de compras");
@@ -454,7 +447,6 @@ class _BuyProductScreenState extends State<BuyProductScreen> {
   _getConfig() async {
     lista = await listConfig();
   }
-
 
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(

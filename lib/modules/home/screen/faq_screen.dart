@@ -16,13 +16,6 @@ class _FaqScreenState extends State<FaqScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
-    double result = MediaQuery
-        .of(context)
-        .size
-        .height - AppBar().preferredSize.height;
 
 
     return Scaffold(

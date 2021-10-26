@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mandaos/modules/products/models/product.dart';
@@ -6,21 +8,22 @@ import 'package:mandaos/utils/constants.dart';
 import 'package:provider/provider.dart';
 
 class CardProductBuyHome extends StatefulWidget {
-   CardProductBuyHome(
-      {Key? key, required this.product, required this.peopleG, this.cantPeople = 1})
+  CardProductBuyHome(
+      {Key? key,
+      required this.product,
+      required this.peopleG,
+      this.cantPeople = 1})
       : super(key: key);
 
   Product product;
   int cantPeople;
-   bool peopleG;
+  bool peopleG;
 
   @override
   _CardProductBuyHomeState createState() => _CardProductBuyHomeState();
 }
 
 class _CardProductBuyHomeState extends State<CardProductBuyHome> {
-
-
   @override
   Widget build(BuildContext context) {
     double t = widget.product.price * widget.product.cuota * widget.cantPeople;
@@ -86,9 +89,9 @@ class _CardProductBuyHomeState extends State<CardProductBuyHome> {
           children: [
             Expanded(
               flex: 1,
-              child:  CircleAvatar(
-                maxRadius: 50,
-                backgroundImage: AssetImage(widget.product.img),
+              child: CircleAvatar(
+                maxRadius: 40,
+                backgroundImage: _backgroundImage2(widget.product.img),
               ),
             ),
             Expanded(
@@ -116,9 +119,7 @@ class _CardProductBuyHomeState extends State<CardProductBuyHome> {
                     Text(
                       total +
                           " por " +
-                          c
-                              .toString()
-                              .replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") +
+                          c.toStringAsFixed(2).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") +
                           " " +
                           widget.product.um,
                       overflow: TextOverflow.ellipsis,
@@ -132,7 +133,7 @@ class _CardProductBuyHomeState extends State<CardProductBuyHome> {
               ),
             ),
             Expanded(
-              flex: 0,
+                flex: 0,
                 child: Container(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.zero,
@@ -140,32 +141,27 @@ class _CardProductBuyHomeState extends State<CardProductBuyHome> {
                     color: kPrimaryColor.withOpacity(.8),
                     borderRadius: BorderRadius.circular(20),
                   ),
-
                   width: 45,
                   height: 100,
                   child: Column(
-
-
                     children: [
                       Expanded(
                         flex: 1,
                         child: IconButton(
                             onPressed: () {
                               setState(() {
-
-                                widget.peopleG == true?
-                                widget.cantPeople = widget.cantPeople + 1:
-                                widget.cantPeople = widget.product.people + 1
-                                ;
-
+                                widget.peopleG == true
+                                    ? widget.cantPeople = widget.cantPeople + 1
+                                    : widget.cantPeople =
+                                        widget.product.people + 1;
                               });
 //print('La cantidad es: ${widget.cantPeople} de ${widget.product.title}');
                               print('Anterior: ${widget.product.people}');
                               widget.product.people = widget.cantPeople;
                               print('Despues: ${widget.product.people}');
 
-                                  _prodProvider.updateToCatalog(widget.product);
-                              print('La cantidad es: ${_prodProvider.total()}' );
+                              _prodProvider.updateToCatalog(widget.product);
+                              print('La cantidad es: ${_prodProvider.total()}');
                             },
                             icon: Icon(
                               Icons.add_circle,
@@ -175,41 +171,41 @@ class _CardProductBuyHomeState extends State<CardProductBuyHome> {
                       ),
                       Expanded(
                           flex: 0,
-                          child:Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
                                 widget.cantPeople.toString() + " ",
-
-
-                                style: TextStyle(color: Colors.white, fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
                               ),
-                              Icon(CupertinoIcons.person_alt, color: CupertinoColors.white,size: 16,)
+                              Icon(
+                                CupertinoIcons.person_alt,
+                                color: CupertinoColors.white,
+                                size: 16,
+                              )
                             ],
                           )),
                       Expanded(
                           flex: 1,
-                          child:IconButton(
+                          child: IconButton(
                               color: Colors.white,
                               focusColor: Colors.redAccent,
                               onPressed: () {
-                                if(widget.cantPeople > 1)
-                                {
+                                if (widget.cantPeople > 1) {
                                   setState(() {
-
-
-                                    widget.peopleG == true?
-                                    widget.cantPeople = widget.cantPeople - 1:
-                                    widget.cantPeople = widget.product.people - 1;
+                                    widget.peopleG == true
+                                        ? widget.cantPeople =
+                                            widget.cantPeople - 1
+                                        : widget.cantPeople =
+                                            widget.product.people - 1;
                                   });
                                   widget.product.people = widget.cantPeople;
                                   _prodProvider.updateToCatalog(widget.product);
                                 }
-
                               },
                               icon: Icon(
                                 Icons.remove_circle,
-
                                 size: 28,
                               ))),
                     ],
@@ -222,22 +218,30 @@ class _CardProductBuyHomeState extends State<CardProductBuyHome> {
     );
   }
 
+  ImageProvider? _backgroundImage(String path) {
+    if (path.contains('assets')) {
+      return AssetImage(path);
+    }
+    return FileImage(File(path));
+  }
+
   @override
   void initState() {
     super.initState();
 
-
-      widget.cantPeople = widget.product.people;
-
-
-
-
-
+    widget.cantPeople = widget.product.people;
   }
 
   @override
   void dispose() {
     super.dispose();
   }
-}
 
+  ImageProvider? _backgroundImage2(String path) {
+    if (path.contains('assets')) {
+      return AssetImage(path);
+    } else {
+      return FileImage(File(path));
+    }
+  }
+}

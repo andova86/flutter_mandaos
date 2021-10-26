@@ -20,6 +20,7 @@ class Assets {
   static const String imgCarritoCompras = 'assets/img/carritoCompras.png';
   static const String imgCartonHuevos = 'assets/img/cartonHuevos.jpg';
   static const String imgChicharos = 'assets/img/chicharos.jpg';
+  static const String imgComp = 'assets/img/comp.png';
   static const String imgCompota = 'assets/img/compota.jpg';
   static const String imgCompra = 'assets/img/compra.png';
   static const String imgCriolloPopular = 'assets/img/criolloPopular.jpg';

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,13 +20,13 @@ class HistoricalBuyScreen extends StatefulWidget {
 class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
   //TextEditingController _filter = new TextEditingController();
   List<CartProduct> list = [];
-  int total = 0;
+  double total = 0;
   Buy? b;
-  DateTime date = DateTime.now();
+  DateTime dateField = DateTime.now();
   List<Buy> lista = [];
   List<CartProduct> listaD = [];
+
   //final dbHelper = n;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState> ();
 
   //List<Product> filteredProd = [];
 
@@ -32,19 +34,18 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
   int value = 0;
   double valueK = 0;
 
-
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double result = MediaQuery.of(context).size.height - AppBar().preferredSize.height;
+    double result =
+        MediaQuery.of(context).size.height - AppBar().preferredSize.height;
 
     // final _prodProvider = Provider.of<ProductProvider>(context, listen: false);
     //list = _prodProvider.products;
 
     //int total = _getTotal();
-
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -56,53 +57,35 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
         title: Text(
           'Historial de Compras',
           style: TextStyle(
-              fontSize: 18,
+              fontSize: 18, color: Colors.white, fontFamily: 'UbuntuRegular'),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.list_alt_outlined,
+              size: 32.0,
               color: Colors.white,
-              fontFamily: 'UbuntuRegular'),
-        ),
-        /*actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.shopping_bag,
-                size: 32.0,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            )
-          ],*/
+            ),
+            onPressed: () {
+              setState(() {
+                list = [];
+              });
+              print(listaD.length);
+            },
+          )
+        ],
       ),
-       floatingActionButton: FloatingActionButton(onPressed: (){
-
-         _getConfig(DateFormat('dd/MM/yyyy').format(date)).then((val) {
-           setState(() {
-             //print(listaD);
-             if(listaD.length > 0)
-               {
-
-                 list = listaD;
-
-
-                 total = _getTotal();
-               }
-             else{
-               list=[];
-               Message('! No existen datos de compra en el día seleccionado !',context);
-             }
-
-
-
-           });
-           print("success");
-         }).catchError((error, stackTrace) {
-           print("outer: $error");
-         });
-
-
-       },
-         mini: result < 480? true: false,
-        child: Icon(Icons.refresh, color: Colors.white,),
-          backgroundColor: Colors.redAccent,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _getData(context, DateFormat('dd/MM/yyyy').format(dateField));
+        },
+        mini: result < 480 ? true : false,
+        child: Icon(
+          Icons.refresh,
+          color: Colors.white,
         ),
+        backgroundColor: Colors.redAccent,
+      ),
       body: SafeArea(
         maintainBottomViewPadding: false,
         child: Column(
@@ -144,20 +127,104 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                 ],
               ),
             ),
-            list.length==0? Expanded(child: Center(child: Icon(CupertinoIcons.cart, size: 64,color: kPrimaryColor.withOpacity(.5),))):
+            list.length == 0
+                ? Expanded(
+                    child: FutureBuilder<List<DateTime>>(
+                    future: ListBuysInYear(DateTime.now().year),
+                    builder: (
+                      context,
+                      snapshot,
+                    ) {
+                      print(snapshot.connectionState);
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return const Text('Error');
+                        } else if (snapshot.hasData) {
+                          return Container(
+                            padding: EdgeInsets.all(20),
+                            child: ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, i) {
+                                  String dt = DateFormat('dd/MM/yyyy')
+                                      .format(snapshot.data![i]);
+                                  return ListTile(
+                                    title: Text(
+                                      dt,
+                                      style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                    //subtitle: ,
+                                    leading: Icon(Icons.remove_red_eye_rounded),
+                                    /* trailing: IconButton(icon: Icon(Icons.delete, color: Colors.redAccent,), onPressed: () {
+                                      showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (_) => new AlertDialog(
+                                            content: Text(
+                                              'Desea eliminar la compra seleccionada. ?',
+                                              style: TextStyle(color: kPrimaryColor),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
 
-            Expanded(
-              child: Container(
-                  child: ListView.builder(
-                    itemCount: list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _data(list[index], index);
+                                                  deleteBuybyDate(dt, tableCartProducts).then((value) {
+
+                                                    print('Se elimino ************ $value');
+
+                                                    setState(() {
+                                                      list=[];
+                                                    });
+                                                  });
+                                                },
+                                                child: Text('Aceptar'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  'Cancelar',
+                                                  style: TextStyle(color: Colors.red),
+                                                ),
+                                              )
+                                            ],
+                                          ));
+
+                                    },),*/
+                                    onTap: () {
+                                      if (snapshot.data != null) {
+                                        _getData(context, dt);
+                                      }
+                                    },
+                                  );
+                                }),
+                          );
+                        } else {
+                          return const Text('Empty data');
+                        }
+                      } else {
+                        return Text('State: ${snapshot.connectionState}');
+                      }
                     },
-                  ),
-                  // margin: EdgeInsets.only(left: 10, right: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    /*gradient: LinearGradient(
+                  ))
+                : Expanded(
+                    child: Container(
+                        child: ListView.builder(
+                          itemCount: list.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _data(list[index], index);
+                          },
+                        ),
+                        // margin: EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          /*gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomLeft,
                           colors: [
@@ -165,25 +232,25 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                             kSecondaryColor,
                           ],
                         ),*/
-                    /*boxShadow: [
+                          /*boxShadow: [
                           BoxShadow(
                               offset: Offset(0, 20),
                               color: Colors.black38,
                               blurRadius: 5)
                         ]*/
-                  )),
-            ) ,
+                        )),
+                  ),
           ],
         ),
       ),
       bottomNavigationBar: Container(
-        height: result < 480? 50 : 80,
+        height: result < 480 ? 50 : 80,
         padding: EdgeInsets.only(left: 20, right: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -197,7 +264,11 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                   ),
                 ),
                 Text(
-                  " \$ " + total.toString() + ' CUP',
+                  " \$ " +
+                      total
+                          .toStringAsFixed(2)
+                          .replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") +
+                      ' CUP',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -206,32 +277,23 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                 ),
               ],
             ),
-
             ElevatedButton(
                 onPressed: () {
                   _selectDate(context);
-                 // print("*********************");
-                 // print(DateFormat('dd/MM/yyyy').format(date));
-
-
-
+                  // print("*********************");
+                  // print(DateFormat('dd/MM/yyyy').format(date));
                 },
                 style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(kotherColor),
-                    shape:
-                    MaterialStateProperty.all<RoundedRectangleBorder>(
+                    backgroundColor: MaterialStateProperty.all(kotherColor),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
-                        ))
-
-
-                ),
+                      borderRadius: BorderRadius.circular(40),
+                    ))),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      DateFormat('dd/MM/yyyy').format(date),
+                      DateFormat('dd/MM/yyyy').format(dateField),
                       style: TextStyle(
                           color: kPrimaryColor,
                           fontFamily: 'UbuntuRegular',
@@ -247,7 +309,6 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
                     )
                   ],
                 ))
-
           ],
         ),
         decoration: BoxDecoration(
@@ -259,22 +320,44 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
     );
   }
 
-  int _getTotal() {
-    int vtotal = 0;
+  double _getTotal() {
+    double vtotal = 0;
     print('Cantidad: ' + list.length.toString());
-   for (int i = 0; i < list.length; i++) {
+    for (int i = 0; i < list.length; i++) {
       double t = list[i].price * list[i].cuota * list[i].cant;
-      vtotal = vtotal + t.round();
+      vtotal = vtotal + t;
     }
 
     return vtotal;
   }
 
+  void _getData(BuildContext context, String? date) {
+    _getConfig(date!).then((val) {
+      setState(() {
+        //print(listaD);
+        if (listaD.length > 0) {
+          list = listaD;
+
+          total = _getTotal();
+
+          setState(() {
+            dateField = DateFormat('dd/MM/yyyy').parse(date);
+          });
+        } else {
+          list = [];
+          Message(
+              '! No existen datos de compra en el día seleccionado !', context);
+        }
+      });
+      print("success");
+    }).catchError((error, stackTrace) {
+      print("outer: $error");
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
-
   }
 
   @override
@@ -283,28 +366,20 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
   }
 
   _getConfig(String dateNew) async {
-   // print(date);
+    // print(date);
     listaD = await listCartProductBuy(dateNew);
     //print(listaD);
   }
 
-  _getBuy() async {
-
-    b = await getBuybyDate(DateFormat('dd/MM/yyyy').format(date), tableBuy);
-  }
-
-  _selectDate(BuildContext context) async{
-
+  _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
-      initialDate: date,
+      initialDate: dateField,
       firstDate: DateTime(2020),
       lastDate: DateTime(2050),
       helpText: 'Seleccione la fecha de la compra',
       cancelText: 'Cancelar',
       confirmText: 'Aceptar',
-
-
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -322,68 +397,112 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
           child: child!,
         );
       },
-
-
     );
 
-    if(selected != null && selected != date){
+    if (selected != null && selected != dateField) {
       setState(() {
-        date = selected;
-
+        dateField = selected;
       });
-
     }
   }
 
-
-
-
-
   Widget _data(CartProduct cart, int index1) {
-
-
-
- double  p = cart.price * cart.cant * cart.cuota;
-    String unit = cart.um == "uno"? cart.title.toLowerCase() :cart.um.toString();
+    double p = cart.price * cart.cant * cart.cuota;
+    String unit =
+        cart.um == "uno" ? cart.title.toLowerCase() : cart.um.toString();
 
     return Column(
       children: [
-
         Dismissible(
           key: UniqueKey(),
           child: ListTile(
+
             leading:  CircleAvatar(
-              maxRadius: 20,
-              backgroundImage: AssetImage(cart.img),
+              maxRadius: 25,
+              backgroundColor: kotherColor,
+              child: Text(
+                '\$ ' +
+                    p
+                        .toStringAsFixed(2)
+                        .replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), ""),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: kPrimaryColor),
+              ),
             ),
-            title: Text(cart.title, maxLines: 2, overflow: TextOverflow.ellipsis,),
+
+              // SizedBox(height: 5,),
+              // CircleAvatar(
+              //   maxRadius: 15,
+              //   backgroundImage: _backgroundImage2(cart.img),
+              // ),
+            title: Text(
+              cart.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 5,),
-                Text((cart.cuota * cart.cant).toString().replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "")  + " " + unit + " por " + cart.cant.toString() + " personas."),
+                SizedBox(
+                  height: 5,
+                ),
+                Text((cart.cuota * cart.cant)
+                        .toStringAsFixed(2)
+                        .replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "") +
+                    " " +
+                    unit +
+                    " por " +
+                    cart.cant.toString() +
+                    " personas."),
+              ],
+            ),
+            trailing: IconButton(onPressed: (){
 
-              ],
-            ),
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('\$ ' + p.toStringAsFixed(1).replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "")  , style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),),
-               /* Text('CUP',style: TextStyle(color: kTextColor),)*/
-              ],
-            ),
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (_) => new AlertDialog(
+                    content: Text(
+                      'Desea eliminar el producto seleccionado. ?',
+                      style: TextStyle(color: kPrimaryColor),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+
+                          setState(() {
+                            delete(cart.id!, tableCartProducts);
+                            list.removeAt(index1);
+                          });
+
+                          Navigator.of(context).pop();
+
+
+                        },
+                        child: Text('Aceptar'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Cancelar',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      )
+                    ],
+                  ));
+            }, icon: Icon(Icons.delete_forever, color: Colors.red,),)
           ),
-
           onDismissed: (index) {
             setState(() {
-              delete(cart.id, tableCartProducts);
+              delete(cart.id!, tableCartProducts);
               list.removeAt(index1);
             });
           },
-
           direction: DismissDirection.endToStart,
-
           background: Container(
             color: Colors.red,
             margin: EdgeInsets.symmetric(horizontal: 15),
@@ -395,34 +514,18 @@ class _HistoricalBuyScreenState extends State<HistoricalBuyScreen> {
             ),
           ),
         ),
-        Divider(height: 10,),
+        Divider(
+          height: 10,
+        ),
       ],
     );
   }
 
-  Widget _Emoticon() {
-/*
-
-    if(value >= 2 && value <= 5)
-    {
-      return Icon(CupertinoIcons., color: kPrimaryColor,size: 32,);
+  ImageProvider? _backgroundImage2(String path) {
+    if (path.contains('assets')) {
+      return AssetImage(path);
+    } else {
+      return FileImage(File(path));
     }
-
-    if(value >= 6 && value <= 9)
-    {
-      return Icon(CupertinoIcons.battery_25, color: kPrimaryColor,size: 32,);
-    }
-
-    if(value >= 10 && value <= 15)
-    {
-      return Icon(CupertinoIcons.battery_100, color: kPrimaryColor,size: 32,);
-    }
-*/
-
-    return Icon(
-      CupertinoIcons.person_2_alt,
-      color: kPrimaryColor,
-      size: 32,
-    );
   }
 }

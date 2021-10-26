@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -18,6 +20,9 @@ class CardProductHomeGV extends StatelessWidget {
 
     Size size = MediaQuery.of(context).size;
     double result = size.height - AppBar().preferredSize.height;
+   File file = File(product.img);
+    //print("User *******  ${product.prodUser}");
+   //print("Prod *******  ${file.exists()}");
 
     return ClipRRect(
       borderRadius: BorderRadius.only(
@@ -28,8 +33,8 @@ class CardProductHomeGV extends StatelessWidget {
         decoration: BoxDecoration(color: Colors.white),
         child: GestureDetector(
           onTap: () {
-
-            Navigator.pushNamed(context, 'productdetail',arguments: product);
+                      print(product.toJson());
+            Navigator.pushNamed(context, 'productdetail',arguments: product.id);
 
           },
           child: Stack(
@@ -41,9 +46,17 @@ class CardProductHomeGV extends StatelessWidget {
                   Hero(
                     tag: "hero-" + product.id.toString() + product.title,
                     transitionOnUserGestures: true,
-                    child: Image.asset(
+                    child: product.img.contains('assets') == false ?
+                   Image(image: FileImage(file),
+                     fit: BoxFit.cover,
+                     width: double.infinity,
+                     height: result >= 480 ? 120 : 100,
+                   ) :
+
+
+                    Image.asset(
                       product.img,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       width: double.infinity,
                       height: result >= 480 ? 120 : 100,
                     ),

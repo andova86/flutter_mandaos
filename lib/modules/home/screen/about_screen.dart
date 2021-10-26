@@ -19,8 +19,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    const _url = 'https://t.me/mandaos_cuba';
+    const _url = 'https://t.me/joinchat/607H7d7UwLZkZDdh';
     const _mail =
         'mailto:andova86@gmail.com?subject=Recomendaciones de Usuario';
     const _phone = 'tel:+5353302763';
@@ -29,13 +28,15 @@ class _AboutScreenState extends State<AboutScreen> {
         ? await launch(_url)
         : throw 'No se puede acceder a $_url';
 
-    void _launchEmail() async => await canLaunch(_mail)
+
+
+   /* void _launchEmail() async => await canLaunch(_mail)
         ? await launch(_mail)
         : throw 'Error al enviar correo $_url';
 
     void _launchPhone() async => await canLaunch(_phone)
         ? await launch(_phone)
-        : throw 'Error al llamar $_url';
+        : throw 'Error al llamar $_url';*/
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -65,7 +66,7 @@ class _AboutScreenState extends State<AboutScreen> {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                 /* Container(
+                  /* Container(
                     margin: EdgeInsets.all(10),
                     width: double.infinity,
                     padding: EdgeInsets.all(20),
@@ -166,6 +167,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       ],
                     ),
                   ),
+
                   Container(
                     margin: EdgeInsets.all(10),
                     width: double.infinity,
@@ -204,14 +206,13 @@ class _AboutScreenState extends State<AboutScreen> {
                               // print(DateFormat('dd/MM/yyyy').format(date));
                             },
                             style: ButtonStyle(
-
                                 backgroundColor:
-                                    MaterialStateProperty.all(kSecondaryColor),
+                                MaterialStateProperty.all(kSecondaryColor),
                                 shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40),
-                                ))),
+                                      borderRadius: BorderRadius.circular(40),
+                                    ))),
                             child: Text(
                               'Ver ',
                               style: TextStyle(
@@ -227,6 +228,66 @@ class _AboutScreenState extends State<AboutScreen> {
                       ],
                     ),
                   ),
+
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    width: double.infinity,
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: kPrimaryColor,
+                              blurRadius: 5,
+                              spreadRadius: 0.5,
+                              offset: Offset(0, 1))
+                        ],
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            'Aplicaciones del Desarrollador',
+                            style: TextStyle(
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'UbuntuRegular'),
+                          ),
+                        ),
+                        Divider(
+                          color: kPrimaryColor,
+                        ),
+                        Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: (){
+                                const _url = 'https://www.apklis.cu/application/com.andovadev.comparte';
+                                _launchURLNew(_url);
+                              },
+                              child: Column(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: AssetImage(Assets.imgComp),
+                                    maxRadius: 30,
+                                    backgroundColor: Colors.transparent,
+
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Text('Comparte \n\Comparte', style: TextStyle(color: Colors.grey, fontSize: 10),)
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        ),
+
+
+                        /*  _changesList(),*/
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ))
@@ -236,15 +297,17 @@ class _AboutScreenState extends State<AboutScreen> {
     );
   }
 
+  void _launchURLNew(String url) async => await canLaunch(url)
+      ? await launch(url)
+      : throw 'No se puede acceder a $url';
+
   _showD() {
     showDialog(
         context: context,
-        
         builder: (BuildContext context) {
           return Dialog(
             shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(20.0)),
+                borderRadius: BorderRadius.circular(20.0)),
             //this right here
             child: Container(
               height: MediaQuery.of(context).size.height * 0.5,
@@ -253,8 +316,6 @@ class _AboutScreenState extends State<AboutScreen> {
             ),
           );
         });
-    
-
   }
 
   @override
@@ -287,19 +348,19 @@ class _changesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: listChanges105.length,
+      itemCount: listChanges140.length,
       itemBuilder: (context, pos) {
         return ListTile(
           minLeadingWidth: 10,
           contentPadding: EdgeInsets.all(0),
           title: Text(
-            listChanges105[pos].description,
+            listChanges140[pos].description,
             style: TextStyle(
-              fontSize: 14,
+                fontSize: 14,
                 fontFamily: 'UbuntuRegular',
                 color: kPrimaryColor.withOpacity(.6)),
           ),
-          leading: Text(listChanges105[pos].number.toString() + " - ",
+          leading: Text(listChanges140[pos].number.toString() + " - ",
               style: TextStyle(
                   fontFamily: 'UbuntuRegular',
                   color: kPrimaryColor,

@@ -1,4 +1,4 @@
-// @dart=2.9
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,14 +12,14 @@ class PDFViewerPage extends StatefulWidget {
   final int initPage;
 
 
-   PDFViewerPage({this.file, this.initPage});
+   PDFViewerPage({required this.file, required this.initPage});
 
   @override
   _PDFViewerPageState createState() => _PDFViewerPageState();
 }
 
 class _PDFViewerPageState extends State<PDFViewerPage> {
-  PDFViewController controller;
+  PDFViewController? controller;
   int pages = 0;
   int indexPage = 0;
 
@@ -39,14 +39,14 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
           icon: Icon(Icons.chevron_left, size: 32),
           onPressed: () {
             final page = indexPage == 0 ? pages : indexPage - 1;
-            controller.setPage(page);
+            controller!.setPage(page);
           },
         ),
         IconButton(
           icon: Icon(Icons.chevron_right, size: 32),
           onPressed: () {
             final page = indexPage == pages - 1 ? 0 : indexPage + 1;
-            controller.setPage(page);
+            controller!.setPage(page);
           },
         ),
         ]
@@ -59,7 +59,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
         // swipeHorizontal: true,
         // pageSnap: false,
         // pageFling: false,
-        onRender: (pages) => setState(() => this.pages = pages),
+        onRender: (pages) => setState(() => this.pages = pages!),
         onError: (error){
           print('Perro');
           //Message('Error al abrir la url del Tribuna', context);
@@ -71,7 +71,7 @@ class _PDFViewerPageState extends State<PDFViewerPage> {
         onViewCreated: (controller) =>
             setState(() => this.controller = controller),
         onPageChanged: (indexPage, _) =>
-            setState(() => this.indexPage = indexPage),
+            setState(() => this.indexPage = indexPage!),
       ),
     );
 

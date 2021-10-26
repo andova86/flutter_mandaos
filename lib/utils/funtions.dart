@@ -31,3 +31,27 @@ void Message(String message, BuildContext context){
         ],
       ));
 }
+
+void MessageSnackBar(String message, BuildContext context, IconData icon, Color colorIcon){
+  final snackBar = SnackBar(
+      duration: Duration(seconds: 1),
+      content: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Icon(
+                icon,
+                color: colorIcon,
+              ),
+            ),
+             FittedBox(child: Text(message)),
+
+          ],
+        ),
+      ));
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+}

@@ -109,3 +109,153 @@ List<ChangesModel> listChanges105 = [
       number: 5),
 
 ];
+
+List<ChangesModel> listChanges106 = [
+  ChangesModel(
+      version: "1.0.6",
+      description: "Cambio de diseño en la pantalla de \"Inicio\" el carrousel de productos.",
+      number: 1),
+
+  ChangesModel(
+      version: "1.0.6",
+      description: "Se añadió la validación de la compra de la aplicación.",
+      number: 2),
+
+   ChangesModel(
+      version: "1.0.6",
+      description: "Se mejora y se optimiza la aplicación.",
+      number: 5),
+
+];
+
+List<ChangesModel> listChanges107 = [
+  ChangesModel(
+      version: "1.0.7",
+      description: "Se añadió en la pantalla de \"Listado de Productos\" la opción de crear uno nuevo.",
+      number: 1),
+
+  ChangesModel(
+      version: "1.0.7",
+      description: "Se mejora y se optimiza la aplicación.",
+      number: 5),
+
+];
+
+List<ChangesModel> listChanges108 = [
+  ChangesModel(
+      version: "1.0.8",
+      description: "Se añadió en la pantalla de \"Detalle del Producto\" la opción de eliminar productos creados por el usuario.",
+      number: 1),
+
+  ChangesModel(
+      version: "1.0.8",
+      description: "Se añadió en la pantalla de \"Lista de Productos\" la opción de actualizar la lista.",
+      number: 2),
+
+  ChangesModel(
+      version: "1.0.8",
+      description: "Se corríge un error en la pantalla de \"Configuración\" al guardar los datos.",
+      number: 3),
+
+  ChangesModel(
+      version: "1.0.8",
+      description: "Se modifica el mensaje en la pantalla de \"Configuración\" al guardar los datos.",
+      number: 4),
+
+  ChangesModel(
+      version: "1.0.8",
+      description: "Se corríge en la pantalla de \"Acerca de..\" la dirección del Grupo de Telegram.",
+      number: 5),
+
+];
+
+List<ChangesModel> listChanges109 = [
+  ChangesModel(
+      version: "1.0.9",
+      description: "Se añadió en la pantalla de  \"Modificar Datos\" la imagen para modificarla y la unidad de medida.",
+      number: 1),
+
+  ChangesModel(
+      version: "1.0.9",
+      description: "Se añadió en la pantalla de \"Reportes\" el total de gastos de un mes seleccionado.",
+      number: 2),
+
+  ChangesModel(
+      version: "1.0.9",
+      description: "Se añadió en la pantalla de \"Configuración\" el rango de edad de 8 a 64 años.",
+      number: 3),
+
+  ChangesModel(
+      version: "1.0.9",
+      description: "Se corrige en la pantalla de \"Compras\" la visualización de la imagen para los productos nuevos.",
+      number: 4),
+
+  ChangesModel(
+      version: "1.0.9",
+      description: "Se corrige en la pantalla de \"Historial de Compras\" la visualización de la imagen para los productos nuevos almacenados.",
+      number: 5),
+
+  ChangesModel(
+      version: "1.0.9",
+      description: "Se añadió en la pantalla de \"Listado de Productos \" un mensaje al presionar el botón de refrescar datos. ",
+      number: 6),
+
+
+
+];
+
+List<ChangesModel> listChanges110 = [
+  ChangesModel(
+      version: "1.1.0",
+      description: "Se corrigió el error en la pantalla de  \"Modificar Datos\" al presionar modificar para los productos por defecto.",
+      number: 1),
+
+  ChangesModel(
+      version: "1.1.0",
+      description: "Se corrigió en la pantalla de \"Inicio\" el componente de imagen al mostrar una modificación de los productos por defecto.",
+      number: 2),
+
+
+
+
+];
+
+List<ChangesModel> listChanges120 = [
+  ChangesModel(
+      version: "1.2.0",
+      description: "En la pantalla de  \"Historial de Compras\" se visualizan las compras realizadas en un listado y al pinchar alguna se muestran los productos comprados.",
+      number: 1),
+
+  ChangesModel(
+      version: "1.2.0",
+      description: "En la pantalla de  \"Historial de Compras\" se añade un icono para retornar a las compras realizadas si el usuario esta verificando alguna compra con sus detalles.",
+      number: 2),
+
+  ChangesModel(
+      version: "1.2.0",
+      description: "En la pantalla de  \"Compras\" y \"Historial de Compras\" los precios se visualizan con 2 lugares decimales si lo requiere.",
+      number: 3),
+
+  ChangesModel(
+      version: "1.2.0",
+      description: "En la pantalla de  \"Reportes\" los gastos se visualizan con 2 lugares decimales si lo requiere.",
+      number: 4),
+
+
+];
+
+List<ChangesModel> listChanges130 = [
+  ChangesModel(
+      version: "1.3.0",
+      description: "En la pantalla de  \"Acerca de\" se añade el acesso a apklis de las aplicaciones del desarrollador.",
+      number: 1),
+
+];
+
+List<ChangesModel> listChanges140 = [
+  ChangesModel(
+      version: "1.4.0",
+      description: "En la pantalla de  \"Historial de Compras\" se añade un icono para eliminar un producto de una compra realizada.",
+      number: 1),
+
+];

@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mandaos/modules/products/models/product.dart';
-import 'package:mandaos/modules/products/screen/product_detail_screen.dart';
 
 class CardCarrousel extends StatelessWidget {
   // const CardCarrousel({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class CardCarrousel extends StatelessWidget {
    // Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'productdetail',arguments: prod);
+        Navigator.pushNamed(context, 'productdetail',arguments: prod.id);
       },
       child:
 
@@ -27,7 +28,7 @@ class CardCarrousel extends StatelessWidget {
 
           decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(prod.img),
+                image: image(),
                 fit: BoxFit.fill,
               ),
               //color: kPrimaryColor,
@@ -91,5 +92,14 @@ class CardCarrousel extends StatelessWidget {
         ),
       //),
     );
+  }
+
+  ImageProvider image() {
+    if(prod.img.contains('assets')){
+      return AssetImage(prod.img);
+    }
+
+    return FileImage(File(prod.img));
+
   }
 }

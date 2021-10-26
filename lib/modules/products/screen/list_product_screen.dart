@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,7 @@ import 'package:mandaos/modules/products/provider/product_provider.dart';
 import 'package:mandaos/modules/products/widget/card_prod_home_gv.dart';
 import 'package:mandaos/services/db_helper.dart';
 import 'package:mandaos/utils/constants.dart';
+import 'package:mandaos/utils/funtions.dart';
 import 'package:mandaos/utils/helper.dart';
 import 'package:mandaos/widgets/ui/badgeUI.dart';
 import 'package:provider/provider.dart';
@@ -54,8 +57,32 @@ class _ListProductScreenState extends State<ListProductScreen> {
         backgroundColor: kPrimaryColor,
 
         actions: <Widget>[
+
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: IconButton(onPressed: (){
+              Navigator.pushNamed(context, 'addproduct',
+                  arguments: 0);
+
+
+            }, icon: Icon(CupertinoIcons.add_circled_solid)),
+          ),
+
+
+
           BadgeUI(),
+
+
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          refreshData().whenComplete(() => MessageSnackBar('Datos actualizados', context, Icons.list, Colors.blueAccent));
+
+        },
+        backgroundColor: Colors.red,
+        mini: true,
+        child: Icon(Icons.refresh, color: Colors.white,),
       ),
       body: Column(
         children: <Widget>[
@@ -315,6 +342,10 @@ class _ListProductScreenState extends State<ListProductScreen> {
     list2 = await listP();
   }
 
+  FutureOr onGoBack() {
+    refreshData();
+  }
+
   Future refreshData() async {
     List<Product> lista = await listP();
     //print(list.length);
@@ -325,6 +356,8 @@ class _ListProductScreenState extends State<ListProductScreen> {
       filteredProd = lista;
     });
   }
+
+
 }
 
 
